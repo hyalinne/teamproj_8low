@@ -13,7 +13,7 @@ public class TPMapPanel extends JPanel {
 	
 	public TPMapPanel(TPFrame mainFrame) {
 		super();
-		this.setSize(300, 400);
+		this.setSize(300, 435);
 		this.setLayout(null);
 		this.mainFrame = mainFrame;
 		

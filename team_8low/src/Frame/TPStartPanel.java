@@ -12,6 +12,7 @@ public class TPStartPanel extends JPanel {
 	
 	public TPStartPanel(JFrame mainFrame) {
 		this.mainFrame = mainFrame;
+		this.setSize(300, 435);
 		this.setLayout(null);
 		this.addMouseListener(new MouseHandler());
 		introImage = Toolkit.getDefaultToolkit().getImage("rsc/intro.jpg");
@@ -19,7 +20,7 @@ public class TPStartPanel extends JPanel {
 	
 	@Override
 	public void paint(Graphics g) {
-		g.drawImage(introImage, 0, 0, 300, 400, this);
+		g.drawImage(introImage, 0, 0, this.getWidth(), this.getHeight(), this);
 	}
 	
 	private class MouseHandler implements MouseListener {
@@ -27,7 +28,7 @@ public class TPStartPanel extends JPanel {
 		@Override
 		public void mouseClicked(MouseEvent e) {
 			if(e.getY() > 250 && e.getX() > 90 && e.getX() < 200) {
-				((TPFrame) mainFrame).removeMain();				
+				((TPFrame) mainFrame).goToSelect();				
 			}
 		}
 

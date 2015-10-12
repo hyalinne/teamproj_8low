@@ -13,7 +13,7 @@ public class TPFrame extends JFrame {
 	
 	public TPFrame() {
 		super();
-		this.setSize(300, 400);
+		this.setSize(300, 435);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		contentPane = this.getContentPane();
 		startPanel = new TPStartPanel(this);
@@ -24,21 +24,14 @@ public class TPFrame extends JFrame {
 	}
 
 	public void goToMap() {
-		contentPane.remove(sltPanel);
+		contentPane.remove(0);
 		contentPane.add(mapPanel);
 		this.setVisible(false);
 		this.setVisible(true);
 	}
 	
 	public void goToSelect() {
-		contentPane.remove(mapPanel);
-		contentPane.add(sltPanel);
-		this.setVisible(false);
-		this.setVisible(true);
-	}
-	
-	public void removeMain() {
-		contentPane.remove(startPanel);
+		contentPane.remove(0);
 		contentPane.add(sltPanel);
 		this.setVisible(false);
 		this.setVisible(true);
