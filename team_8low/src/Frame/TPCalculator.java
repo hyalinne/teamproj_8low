@@ -7,7 +7,7 @@ public class TPCalculator {
 	private String selectedRegion, selectedTheme;
 	private EData[] course;
 	
-	private TPCalculator() {
+	TPCalculator() {
 		course = new EData[5];
 	}
 	
