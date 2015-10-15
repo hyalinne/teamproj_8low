@@ -34,7 +34,7 @@ public class TPSelectPanel extends JPanel {
 				selectedRegion = (String) regionSLT.getSelectedItem();
 			}
 		});
-		regionSLT.setBounds(100, 80, 80, 30);
+		regionSLT.setBounds(100, 80, 80, 35);
 		this.add(regionSLT);
 		
 		JLabel themeLabel = new JLabel("Å×¸¶");
@@ -49,7 +49,7 @@ public class TPSelectPanel extends JPanel {
 				selectedTheme = (String) themeSLT.getSelectedItem();
 			}
 		});
-		themeSLT.setBounds(100, 180, 80, 30);
+		themeSLT.setBounds(100, 180, 80, 35);
 		this.add(themeSLT);
 		
 		JButton runBtn = new JButton("Run");

@@ -11,8 +11,8 @@ public class TPFrame extends JFrame {
 	private JPanel sltPanel;
 	private JPanel mapPanel;
 	
-	public TPFrame() {
-		super();
+	public TPFrame(String name) {
+		super(name);
 		this.setSize(300, 435);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		contentPane = this.getContentPane();

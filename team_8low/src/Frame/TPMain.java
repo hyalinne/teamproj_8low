@@ -4,6 +4,6 @@ import javax.swing.JFrame;
 
 public class TPMain {
 	public static void main(String[] args) {
-		JFrame frame = new TPFrame();
+		JFrame frame = new TPFrame("8low");
 	}
 }
