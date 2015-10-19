@@ -1,4 +1,4 @@
-package Frame;
+package frame;
 
 import java.awt.Container;
 
@@ -6,14 +6,16 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 import constants.TPConstant;
+import panels.TPSelectPanel;
+import panels.TPStartPanel;
 
 public class TPFrame extends JFrame {
 	// attributes
 	private static final long serialVersionUID = 1L;
 	// components
 	private Container contentPane;
-	private JPanel startPanel;
-	private JPanel sltPanel;
+	private TPStartPanel startPanel;
+	private TPSelectPanel sltPanel;
 	// associations
 	// working variable
 	
@@ -30,6 +32,7 @@ public class TPFrame extends JFrame {
 		contentPane = this.getContentPane();
 		startPanel = new TPStartPanel(this);
 		sltPanel = new TPSelectPanel();
+		sltPanel.init();
 		contentPane.add(startPanel);
 		this.setVisible(true);
 	}

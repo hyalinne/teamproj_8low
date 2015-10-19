@@ -1,18 +1,22 @@
-package Frame;
+package frame;
+
+import java.util.Vector;
 
 import constants.TPConstant;
 import data.TPData.EData;
 
 public class TPCalculator {
 	// attributes
+	private static TPCalculator calculatorInstance;
 	// components
 	// associations
 	// working variables
-	private static TPCalculator calculatorInstance;
 	private String selectedRegion, selectedTheme;
+	private Vector<EData> dataPool;
 	private EData[] course;
 	
 	private TPCalculator() {
+		dataPool = new Vector<EData>();
 		course = new EData[TPConstant.COURSE_NUM];
 	}
 	
@@ -29,7 +33,13 @@ public class TPCalculator {
 	}
 	
 	public void dataSort() {
-		
+		for(EData temp : EData.values()) {
+			if(temp.getRegion() == selectedRegion) {
+				if(temp.getTheme() == selectedTheme) {
+					dataPool.add(temp);
+				}
+			}
+		}
 	}
 	
 	public void courseSort() {

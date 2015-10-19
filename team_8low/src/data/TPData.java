@@ -15,5 +15,7 @@ public class TPData {
 			this.score = score;
 			this.coordinate = coordinate;
 		}
+		public String getRegion() {return region;}
+		public String getTheme() {return theme;}
 	}
 }

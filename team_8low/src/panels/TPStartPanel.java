@@ -1,4 +1,4 @@
-package Frame;
+package panels;
 
 import java.awt.*;
 import java.awt.event.MouseEvent;
@@ -7,16 +7,17 @@ import java.awt.event.MouseListener;
 import javax.swing.*;
 
 import constants.TPConstant;
+import frame.TPFrame;
 
 public class TPStartPanel extends JPanel {
 	// attributes
 	private static final long serialVersionUID = 1L;
 	// components
 	// associations
-	private JFrame mainFrame;
+	private TPFrame mainFrame;
 	// working variables
 	
-	public TPStartPanel(JFrame mainFrame) {
+	public TPStartPanel(TPFrame mainFrame) {
 		// attributes initialization
 		this.setBackground(TPConstant.BACK_COLOR);
 		this.mainFrame = mainFrame;
@@ -32,10 +33,7 @@ public class TPStartPanel extends JPanel {
 	private class MouseHandler implements MouseListener {
 		@Override
 		public void mouseClicked(MouseEvent e) {
-			if((e.getX() > TPConstant.BACK_W * 0.2 && e.getX() < TPConstant.BACK_W * 0.73) 
-					&& (e.getY() > TPConstant.BACK_H * 0.675 && e.getY() < TPConstant.BACK_H * 0.8)) {
-				((TPFrame) mainFrame).removeMain();				
-			}
+			mainFrame.removeMain();
 		}
 		@Override
 		public void mousePressed(MouseEvent e) { }

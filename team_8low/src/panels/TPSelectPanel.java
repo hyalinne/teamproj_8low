@@ -1,4 +1,4 @@
-package Frame;
+package panels;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -8,14 +8,15 @@ import javax.swing.JComboBox;
 import javax.swing.JPanel;
 
 import constants.TPConstant;
+import frame.TPCalculator;
 
 public class TPSelectPanel extends JPanel {
 	// attributes
 	private static final long serialVersionUID = 1L;
 	// components
-	private TPCalculator calc;
 	private JPanel mapPanel;
 	// associations
+	private TPCalculator calc;
 	// working variables
 	private JComboBox<String> subRegionSLT;
 	private JComboBox<String> mainRegionSLT;
@@ -103,6 +104,5 @@ public class TPSelectPanel extends JPanel {
 		this.selectedMainRegion = "선택";
 		this.selectedSubRegion = "선택";
 		this.selectedTheme = "선택";
-		
 	}
 }
