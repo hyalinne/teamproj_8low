@@ -4,6 +4,7 @@ import javax.swing.JFrame;
 
 public class TPMain {
 	public static void main(String[] args) {
-		JFrame frame = new TPFrame("8low");
+		JFrame frmlowgoToTravel = new TPFrame();
+		frmlowgoToTravel.setVisible(true);
 	}
 }

@@ -5,65 +5,104 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import constants.TPConstant;
+
 public class TPSelectPanel extends JPanel {
-	private JFrame mainFrame;
+	// attributes
+	private static final long serialVersionUID = 1L;
+	// components
 	private TPCalculator calc;
-	private String selectedRegion;
+	private JPanel mapPanel;
+	// associations
+	// working variables
+	private JComboBox<String> subRegionSLT;
+	private JComboBox<String> mainRegionSLT;
+	private JComboBox<String> themeSLT;
+	private String selectedMainRegion;
+	private String selectedSubRegion;
 	private String selectedTheme;
 	
-	public TPSelectPanel(JFrame mainFrame) {
+	public TPSelectPanel() {
+		// attributes initialization
 		super();
-		this.setSize(300, 435);
+		this.setBackground(TPConstant.BACK_COLOR);
+		this.setSize(TPConstant.BACK_W, TPConstant.BACK_H);
 		this.setLayout(null);
-		this.mainFrame = mainFrame;
-		this.calc = TPCalculator.getInstance();
 		
-		JLabel regionLabel = new JLabel("지역");
-		regionLabel.setBounds(125, 50, 30, 30);
-		this.add(regionLabel);
-		String[] regionList = {"서울", "대전", "대구", "부산", "제주", "광주", "전주"};
-		selectedRegion = "서울";
-		JComboBox regionSLT = new JComboBox(regionList);
-		regionSLT.addActionListener(new ActionListener() {
+		//components initialization
+		mainRegionSLT = new JComboBox<String>(TPConstant.regionList);
+		mainRegionSLT.setFont(TPConstant.SLTP_KOREAN_FONT);
+		mainRegionSLT.setBackground(TPConstant.BTN_COLOR);
+		mainRegionSLT.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				selectedRegion = (String) regionSLT.getSelectedItem();
+				selectedMainRegion = (String) mainRegionSLT.getSelectedItem();
+				if(selectedMainRegion == "서울") {
+					subRegionSLT.removeAllItems();
+					for(String item : TPConstant.seoulList) {
+						subRegionSLT.addItem(item);
+					}
+				} else if(selectedMainRegion == "용인") {
+					subRegionSLT.removeAllItems();
+					for(String item : TPConstant.yonginList) {
+						subRegionSLT.addItem(item);
+					}
+				}
 			}
 		});
-		regionSLT.setBounds(100, 80, 80, 35);
-		this.add(regionSLT);
+		mainRegionSLT.setBounds(12, 24, 60, 30);
+		this.add(mainRegionSLT);
 		
-		JLabel themeLabel = new JLabel("테마");
-		themeLabel.setBounds(125, 150, 30, 30);
-		this.add(themeLabel);
-		String[] themeList = {"맛집", "관광", "휴식"};
-		selectedTheme = "맛집";
-		JComboBox themeSLT = new JComboBox(themeList);
+		String[] tempList = {"선택"};
+		subRegionSLT = new JComboBox<String>(tempList);
+		subRegionSLT.setFont(TPConstant.SLTP_KOREAN_FONT);
+		subRegionSLT.setBackground(TPConstant.BTN_COLOR);
+		subRegionSLT.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				selectedSubRegion = (String)subRegionSLT.getSelectedItem();
+			}
+		});
+		subRegionSLT.setBounds(84, 24, 60, 30);
+		this.add(subRegionSLT);
+		
+		themeSLT = new JComboBox<String>(TPConstant.themeList);
+		themeSLT.setFont(TPConstant.SLTP_KOREAN_FONT);
+		themeSLT.setBackground(TPConstant.BTN_COLOR);
 		themeSLT.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				selectedTheme = (String) themeSLT.getSelectedItem();
+				selectedTheme = (String)themeSLT.getSelectedItem();
 			}
 		});
-		themeSLT.setBounds(100, 180, 80, 35);
+		themeSLT.setBounds(156, 24, 60, 30);
 		this.add(themeSLT);
 		
 		JButton runBtn = new JButton("Run");
+		runBtn.setFont(TPConstant.SLTP_ENGLISH_FONT);
+		runBtn.setBackground(TPConstant.BTN_COLOR);
 		runBtn.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				calc.calculate(selectedRegion, selectedTheme);
-				((TPFrame) mainFrame).goToMap();
+				calc.calculate(selectedSubRegion, selectedTheme);
 			}
 		});
-		runBtn.setBounds(110, 310, 60, 30);
+		runBtn.setBounds(228, 25, 60, 30);
 		this.add(runBtn);
 		
-		this.setVisible(true);
+		mapPanel = new TPMapPanel();
+		add(mapPanel);
 	}
-
+	
+	public void init() {
+		// associations initialization
+		this.calc = TPCalculator.getInstance();
+		// working variables initialization
+		this.selectedMainRegion = "선택";
+		this.selectedSubRegion = "선택";
+		this.selectedTheme = "선택";
+		
+	}
 }

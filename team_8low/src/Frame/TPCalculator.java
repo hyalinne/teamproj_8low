@@ -1,14 +1,19 @@
 package Frame;
 
+import constants.TPConstant;
 import data.TPData.EData;
 
 public class TPCalculator {
+	// attributes
+	// components
+	// associations
+	// working variables
 	private static TPCalculator calculatorInstance;
 	private String selectedRegion, selectedTheme;
 	private EData[] course;
 	
 	private TPCalculator() {
-		course = new EData[5];
+		course = new EData[TPConstant.COURSE_NUM];
 	}
 	
 	public static TPCalculator getInstance() {
