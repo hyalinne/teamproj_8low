@@ -2,28 +2,27 @@ package panels;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Vector;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JPanel;
 
+import calculator.TPCalculator;
 import constants.TPConstant;
-import frame.TPCalculator;
+import constants.TPConstant.EComboBoxs;
 
 public class TPSelectPanel extends JPanel {
 	// attributes
 	private static final long serialVersionUID = 1L;
 	// components
 	private JPanel mapPanel;
+	private Vector<JComboBox<String>> comboBoxs;
 	// associations
 	private TPCalculator calc;
 	// working variables
-	private JComboBox<String> subRegionSLT;
-	private JComboBox<String> mainRegionSLT;
-	private JComboBox<String> themeSLT;
-	private String selectedMainRegion;
-	private String selectedSubRegion;
-	private String selectedTheme;
+	private String[] selectedItem;
+	private Vector<ActionListener> listeners;
 	
 	public TPSelectPanel() {
 		// attributes initialization
@@ -33,53 +32,19 @@ public class TPSelectPanel extends JPanel {
 		this.setLayout(null);
 		
 		//components initialization
-		mainRegionSLT = new JComboBox<String>(TPConstant.regionList);
-		mainRegionSLT.setFont(TPConstant.SLTP_KOREAN_FONT);
-		mainRegionSLT.setBackground(TPConstant.BTN_COLOR);
-		mainRegionSLT.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				selectedMainRegion = (String) mainRegionSLT.getSelectedItem();
-				if(selectedMainRegion == "서울") {
-					subRegionSLT.removeAllItems();
-					for(String item : TPConstant.seoulList) {
-						subRegionSLT.addItem(item);
-					}
-				} else if(selectedMainRegion == "용인") {
-					subRegionSLT.removeAllItems();
-					for(String item : TPConstant.yonginList) {
-						subRegionSLT.addItem(item);
-					}
-				}
-			}
-		});
-		mainRegionSLT.setBounds(12, 24, 60, 30);
-		this.add(mainRegionSLT);
-		
-		String[] tempList = {"선택"};
-		subRegionSLT = new JComboBox<String>(tempList);
-		subRegionSLT.setFont(TPConstant.SLTP_KOREAN_FONT);
-		subRegionSLT.setBackground(TPConstant.BTN_COLOR);
-		subRegionSLT.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				selectedSubRegion = (String)subRegionSLT.getSelectedItem();
-			}
-		});
-		subRegionSLT.setBounds(84, 24, 60, 30);
-		this.add(subRegionSLT);
-		
-		themeSLT = new JComboBox<String>(TPConstant.themeList);
-		themeSLT.setFont(TPConstant.SLTP_KOREAN_FONT);
-		themeSLT.setBackground(TPConstant.BTN_COLOR);
-		themeSLT.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				selectedTheme = (String)themeSLT.getSelectedItem();
-			}
-		});
-		themeSLT.setBounds(156, 24, 60, 30);
-		this.add(themeSLT);
+		comboBoxs = new Vector<JComboBox<String>>();
+		this.makeListener();
+		int index = 0; // only use in below for statement
+		for(EComboBoxs comboBox : EComboBoxs.values()) {
+			JComboBox<String> temp = new JComboBox<String>(comboBox.getItemList());
+			temp.setFont(TPConstant.SLTP_KOREAN_FONT);
+			temp.setBackground(TPConstant.BTN_COLOR);
+			temp.setBounds(comboBox.getBound());
+			temp.addActionListener(listeners.get(index));
+			comboBoxs.add(temp);
+			this.add(temp);
+			index++;
+		}
 		
 		JButton runBtn = new JButton("Run");
 		runBtn.setFont(TPConstant.SLTP_ENGLISH_FONT);
@@ -87,22 +52,62 @@ public class TPSelectPanel extends JPanel {
 		runBtn.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				calc.calculate(selectedSubRegion, selectedTheme);
+				calc.calculate(selectedItem);
 			}
 		});
-		runBtn.setBounds(228, 25, 60, 30);
+		runBtn.setBounds(TPConstant.RUN_BTN_X, TPConstant.RUN_BTN_Y, TPConstant.RUN_BTN_WIDTH, TPConstant.RUN_BTN_HEIGHT);
 		this.add(runBtn);
 		
 		mapPanel = new TPMapPanel();
 		add(mapPanel);
 	}
-	
+
 	public void init() {
 		// associations initialization
 		this.calc = TPCalculator.getInstance();
 		// working variables initialization
-		this.selectedMainRegion = "선택";
-		this.selectedSubRegion = "선택";
-		this.selectedTheme = "선택";
+		this.selectedItem = new String[3];
+		for(int i = 0; i < TPConstant.COMBOBOX_NUM; i++) {
+			this.selectedItem[i] = "선택";
+		}
+	}
+
+	private void makeListener() {
+		listeners = new Vector<ActionListener>();
+		listeners.add(new MainRegionListener());
+		listeners.add(new SubRegionListener());
+		listeners.add(new ThemeListener());
+	}
+	
+	private class MainRegionListener implements ActionListener {
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			// receive selected main_region & put suitable sub_region to sub_region combo box
+			selectedItem[TPConstant.MAIN_REGION_INDEX] = (String)comboBoxs.get(TPConstant.MAIN_REGION_INDEX).getSelectedItem();
+			for(int i = 0; i < TPConstant.MAIN_REGION_NUM ; i++) {
+				if(selectedItem[TPConstant.MAIN_REGION_INDEX] == TPConstant.MAIN_REGION_LIST[i]) {
+					comboBoxs.get(TPConstant.SUB_REGION_INDEX).removeAllItems();
+					for(String item : TPConstant.SUB_REGION_LIST[i]) {
+						comboBoxs.get(TPConstant.SUB_REGION_INDEX).addItem(item);
+					}
+				}
+			}
+		}
+	}
+	
+	private class SubRegionListener implements ActionListener {
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			selectedItem[TPConstant.SUB_REGION_INDEX] 
+					= (String)comboBoxs.get(TPConstant.SUB_REGION_INDEX).getSelectedItem();
+		}
+	}
+	
+	private class ThemeListener implements ActionListener {
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			selectedItem[TPConstant.THEME_INDEX] 
+					= (String)comboBoxs.get(TPConstant.THEME_INDEX).getSelectedItem();
+		}
 	}
 }

@@ -1,4 +1,4 @@
-package frame;
+package calculator;
 
 import java.util.Vector;
 
@@ -11,7 +11,7 @@ public class TPCalculator {
 	// components
 	// associations
 	// working variables
-	private String selectedRegion, selectedTheme;
+	private String[] selectedItem;
 	private Vector<EData> dataPool;
 	private EData[] course;
 	
@@ -27,19 +27,11 @@ public class TPCalculator {
 		return calculatorInstance;
 	}
 
-	public void calculate(String selectedRegion, String selectedTheme) {
-		this.selectedRegion = selectedRegion;
-		this.selectedTheme = selectedTheme;
+	public void calculate(String[] selectedItem) {
+		this.selectedItem = selectedItem;
 	}
 	
 	public void dataSort() {
-		for(EData temp : EData.values()) {
-			if(temp.getRegion() == selectedRegion) {
-				if(temp.getTheme() == selectedTheme) {
-					dataPool.add(temp);
-				}
-			}
-		}
 	}
 	
 	public void courseSort() {
