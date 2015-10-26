@@ -16,7 +16,7 @@ public class TPSelectPanel extends JPanel {
 	// attributes
 	private static final long serialVersionUID = 1L;
 	// components
-	private JPanel mapPanel;
+	private TPMapPanel mapPanel;
 	private Vector<JComboBox<String>> comboBoxs;
 	// associations
 	private TPCalculator calc;
@@ -53,6 +53,7 @@ public class TPSelectPanel extends JPanel {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				calc.calculate(selectedItem);
+				mapPanel.view();
 			}
 		});
 		runBtn.setBounds(TPConstant.RUN_BTN_X, TPConstant.RUN_BTN_Y, TPConstant.RUN_BTN_WIDTH, TPConstant.RUN_BTN_HEIGHT);
@@ -64,7 +65,7 @@ public class TPSelectPanel extends JPanel {
 
 	public void init() {
 		// associations initialization
-		this.calc = TPCalculator.getInstance();
+		calc = TPCalculator.getInstance();
 		// working variables initialization
 		this.selectedItem = new String[3];
 		for(int i = 0; i < TPConstant.COMBOBOX_NUM; i++) {

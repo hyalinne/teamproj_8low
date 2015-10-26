@@ -27,7 +27,7 @@ public class TPStartPanel extends JPanel {
 	
 	@Override
 	public void paint(Graphics g) {
-		g.drawImage(TPConstant.INTRO_IMG, 0, 0, TPConstant.BACK_W, TPConstant.BACK_H, this);
+		g.drawImage(TPConstant.INTRO_IMG, 0, 0, this.getWidth(), this.getHeight(), this);
 	}
 	
 	private class MouseHandler implements MouseListener {

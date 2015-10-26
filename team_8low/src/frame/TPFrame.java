@@ -3,7 +3,6 @@ package frame;
 import java.awt.Container;
 
 import javax.swing.JFrame;
-import javax.swing.JPanel;
 
 import constants.TPConstant;
 import panels.TPSelectPanel;
