@@ -36,17 +36,17 @@ public class TPConstant {
 	public final static String[][] SUB_REGION_LIST = {{"선택"}, 
 			{"선택", "영등포구", "광진구", "서초구"},
 			{"선택", "처인구", "기흥구", "수지구"}};
-	public final static String[] themeList = {"선택", "맛집", "관광", "휴식"};
+	public final static String[] THEME_LIST = {"선택", "맛집", "관광", "휴식"};
 	
 	// combo box setting
 	public final static int MAIN_REGION_INDEX = 0;
 	public final static int SUB_REGION_INDEX = 1;
 	public final static int THEME_INDEX = 2;
 	public final static int COMBOBOX_NUM = 3;
-	public enum EComboBoxs {
+	public enum ESelectComboBoxs {
 		mainRegion(MAIN_REGION_LIST, new Rectangle(12, 24, 60, 30)),
 		subRegion(SUB_REGION_LIST[0], new Rectangle(84, 24, 60, 30)),
-		theme(themeList, new Rectangle(156, 24, 60, 30));
+		theme(THEME_LIST, new Rectangle(156, 24, 60, 30));
 		
 		private String[] itemList;	
 		private Rectangle bound;
@@ -54,7 +54,7 @@ public class TPConstant {
 		public void setItemList(String[] itemList) {this.itemList = itemList;}
 		public Rectangle getBound() {return bound;}
 	
-		private EComboBoxs(String[] itemList, Rectangle bound) {
+		private ESelectComboBoxs(String[] itemList, Rectangle bound) {
 			this.itemList = itemList;
 			this.bound = bound;
 		}
@@ -79,6 +79,47 @@ public class TPConstant {
 	public final static ImageIcon ICON_SLEEPING = new ImageIcon("rsc/icon_sleeping.png");
 	public final static ImageIcon ICON_SEEING = new ImageIcon("rsc/icon_seeing.png");
 	
+	public final static int SELECTED = 0;
+	
+	public enum ECourseButton {
+		first(0, new Rectangle(10, 10, 44, 56)),
+		second(1, new Rectangle(105, 70, 44, 56)),
+		third(2, new Rectangle(195, 120, 44, 56)),
+		fourth(3, new Rectangle(120, 180, 44, 56)),
+		fifth(4, new Rectangle(30, 230, 44, 56));
+		
+		private int num;
+		private Rectangle bound;
+		public int getNum() {return num;}
+		public Rectangle getBound() {return bound;}
+	
+		private ECourseButton(int num, Rectangle bound) {
+			this.num = num;
+			this.bound = bound;
+		}
+	}
+	
+	public final static String[] BASE_SELECT = {"선택", "선택", "선택"};
+	public enum ECourseComboBoxs {
+		first(new Rectangle(10, 60, 100, 30)),
+		second(new Rectangle(90, 120, 100, 30)),
+		third(new Rectangle(175, 170, 100, 30)),
+		fourth(new Rectangle(100, 230, 100, 30)),
+		fifth(new Rectangle(25, 280, 100, 30));
+		
+		private String[] itemList;	
+		private Rectangle bound;
+		public String[] getItemList() {return itemList;}
+		public void setItemList(String[] itemList) {this.itemList = itemList;}
+		public Rectangle getBound() {return bound;}
+	
+		private ECourseComboBoxs(Rectangle bound) {
+			this.itemList = BASE_SELECT;
+			this.bound = bound;
+		}
+	}
+	
 	// Calculator
 	public final static int COURSE_NUM = 5;
+	public final static int CHANGE_NUM = 5;
 }

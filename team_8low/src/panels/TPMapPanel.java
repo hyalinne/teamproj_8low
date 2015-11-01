@@ -3,12 +3,17 @@ package panels;
 import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Vector;
+
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JComponent;
 import javax.swing.JPanel;
 
 import calculator.TPCalculator;
 import constants.TPConstant;
+import constants.TPConstant.ECourseButton;
+import constants.TPConstant.ECourseComboBoxs;
 import data.TPData.EData;
 
 public class TPMapPanel extends JPanel {
@@ -18,61 +23,73 @@ public class TPMapPanel extends JPanel {
 	// associations
 	private TPCalculator calc;
 	// working variables
-	private EData[] course;
+	private EData[][] course;
+	private Vector<JComboBox<String>> changes;
 
 	public TPMapPanel() {
 		// attributes initialization
 		this.setBounds(TPConstant.MP_X, TPConstant.MP_Y, TPConstant.MP_WIDTH, TPConstant.MP_HEIGHT);
 		this.setLayout(null);
 		// components initialization
-		String[] origin = {"1", "2", "3"};
-		JComboBox<String> change1 = new JComboBox<String>(origin);
-		change1.setBounds(10, 60, 100, 30);
-		change1.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
-				change1.setVisible(false);
-			}
-		});
-		change1.setVisible(false);
-		this.add(change1);
-		JButton button1 = new JButton();
-		button1.setIcon(TPConstant.ICON_EATING);
-		button1.setBounds(10, 10, 44, 56);
-		button1.setBackground(TPConstant.MP_COLOR);
-		button1.setOpaque(false);
-		button1.setBorderPainted(false);
-		button1.setFocusPainted(false);
-		button1.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
-				change1.setVisible(true);
-			}
-		});
-		this.add(button1);
 	}
 	
 	public void init() {
 		// associations initialization
 		calc = TPCalculator.getInstance();
 		// working variables initialization
+		changes = new Vector<JComboBox<String>>();
 	}
 	
-	public void setButton() {
-		course[0].getName();
+	public void makeButton() {
+		for(ECourseButton temp : ECourseButton.values()) {
+			JButton button = new JButton();
+			button.setIcon(TPConstant.ICON_SLEEPING);
+			button.setBounds(temp.getBound());
+			if(course[temp.getNum()][TPConstant.SELECTED].getTheme() == TPConstant.EATING) {
+				button.setIcon(TPConstant.ICON_EATING);
+			} else if(course[temp.getNum()][TPConstant.SELECTED].getTheme() == TPConstant.SEEING) {
+				button.setIcon(TPConstant.ICON_SEEING);
+			} else if(course[temp.getNum()][TPConstant.SELECTED].getTheme() == TPConstant.SLEEPING) {
+				button.setIcon(TPConstant.ICON_SLEEPING);
+			}
+			button.setBackground(TPConstant.MP_COLOR);
+			button.setOpaque(false);
+			button.setBorderPainted(false);
+			button.setFocusPainted(false);
+			button.addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					// TODO Auto-generated method stub
+					changes.get(temp.getNum()).setVisible(true);
+				}
+			});
+			this.add(button);
+		}
+	}
+	
+	public void makeChanges() {
+		for(ECourseComboBoxs temp : ECourseComboBoxs.values()) {
+			JComboBox<String> change = new JComboBox<String>(temp.getItemList());
+			change.setBounds(temp.getBound());
+			change.addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					// TODO Auto-generated method stub
+					((JComponent)e.getSource()).setVisible(false);
+				}
+			});
+			change.setVisible(false);
+			changes.add(change);
+			this.add(change);
+		}
 	}
 	
 	public void view() {
 		course = calc.getCourse();
 		repaint();
+		this.makeChanges();
+		this.makeButton();
 	}
-	
-	public void setCourse(EData[] course) {
-		this.course = course;
-	}
-	
 	
 	@Override
 	public void paintComponent(Graphics g) {

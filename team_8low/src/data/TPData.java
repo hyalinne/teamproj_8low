@@ -4,7 +4,11 @@ import java.awt.Point;
 
 public class TPData {
 	public enum EData {
-		date1("처인구", "맛집", "이름", 5, new Point(2,3));
+		date1("처인구", "맛집", "이름", 5, new Point(2,3)),
+		date2("처인구", "관광", "이름", 5, new Point(2,3)),
+		date3("처인구", "휴식", "이름", 5, new Point(2,3)),
+		date4("처인구", "맛집", "이름", 5, new Point(2,3)),
+		date5("처인구", "휴식", "이름", 5, new Point(2,3));
 		
 		String region, theme, name;
 		int score; // 1 - 5 score, 5 is best

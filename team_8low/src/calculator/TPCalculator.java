@@ -12,7 +12,7 @@ public class TPCalculator {
 	private Vector<EData> eatingPool;
 	private Vector<EData> seeingPool;
 	private Vector<EData> sleepingPool;
-	private EData[] course;
+	private EData[][] course;
 	// associations
 	// working variables
 	private String[] selectedItem;
@@ -23,7 +23,7 @@ public class TPCalculator {
 		eatingPool = new Vector<EData>();
 		seeingPool = new Vector<EData>();
 		sleepingPool = new Vector<EData>();
-		course = new EData[TPConstant.COURSE_NUM];
+		course = new EData[TPConstant.COURSE_NUM][TPConstant.CHANGE_NUM];
 	}
 	
 	public void init() {
@@ -61,8 +61,11 @@ public class TPCalculator {
 	
 	public void courseSort() {
 		if(selectedItem[TPConstant.THEME_INDEX] == TPConstant.EATING) {
-			course[0] = eatingPool.get(0);
-			
+			course[0][0] = eatingPool.get(0);
+			course[1][0] = seeingPool.get(0);
+			course[2][0] = sleepingPool.get(0);
+			course[3][0] = eatingPool.get(1);
+			course[4][0] = sleepingPool.get(1);
 		} else if(selectedItem[TPConstant.THEME_INDEX] == TPConstant.SEEING) {
 			
 		} else if(selectedItem[TPConstant.THEME_INDEX] == TPConstant.SLEEPING) {
@@ -70,5 +73,5 @@ public class TPCalculator {
 		}
 	}
 	
-	public EData[] getCourse() {return course;}
+	public EData[][] getCourse() {return course;}
 }
