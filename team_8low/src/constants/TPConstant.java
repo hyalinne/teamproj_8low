@@ -31,10 +31,9 @@ public class TPConstant {
 	public final static Color BTN_COLOR = new Color(240, 255, 240);
 	
 	// string setting
-	public final static int MAIN_REGION_NUM = 3;
-	public final static String[] MAIN_REGION_LIST = {"선택","서울","용인"};
-	public final static String[][] SUB_REGION_LIST = {{"선택"}, 
-			{"선택", "영등포구", "광진구", "서초구"},
+	public final static int MAIN_REGION_NUM = 2;
+	public final static String[] MAIN_REGION_LIST = {"선택","용인"};
+	public final static String[][] SUB_REGION_LIST = {{"선택"},
 			{"선택", "처인구", "기흥구", "수지구"}};
 	public final static String[] THEME_LIST = {"선택", "맛집", "관광", "휴식"};
 	
@@ -67,6 +66,8 @@ public class TPConstant {
 	public final static int RUN_BTN_HEIGHT = 30;
 	
 	// MapPanel
+	public enum EMapButtonState {idle, explain, select;}
+	
 	public final static Color MP_COLOR = Color.WHITE;
 	public final static int MP_X = 12;
 	public final static int MP_Y = 64;
@@ -81,7 +82,7 @@ public class TPConstant {
 	
 	public final static int SELECTED = 0;
 	
-	public enum ECourseButton {
+	public enum ECourseButtons {
 		first(0, new Rectangle(10, 10, 44, 56)),
 		second(1, new Rectangle(105, 70, 44, 56)),
 		third(2, new Rectangle(195, 120, 44, 56)),
@@ -93,7 +94,7 @@ public class TPConstant {
 		public int getNum() {return num;}
 		public Rectangle getBound() {return bound;}
 	
-		private ECourseButton(int num, Rectangle bound) {
+		private ECourseButtons(int num, Rectangle bound) {
 			this.num = num;
 			this.bound = bound;
 		}
@@ -115,6 +116,21 @@ public class TPConstant {
 	
 		private ECourseComboBoxs(Rectangle bound) {
 			this.itemList = BASE_SELECT;
+			this.bound = bound;
+		}
+	}
+	
+	public enum ECourseTexts {
+		first(new Rectangle(10, 10, 100, 80)),
+		second(new Rectangle(90, 120, 100, 50)),
+		third(new Rectangle(175, 170, 100, 50)),
+		fourth(new Rectangle(100, 230, 100, 50)),
+		fifth(new Rectangle(25, 280, 100, 50));
+		
+		private Rectangle bound;
+		public Rectangle getBound() {return bound;}
+	
+		private ECourseTexts(Rectangle bound) {
 			this.bound = bound;
 		}
 	}
