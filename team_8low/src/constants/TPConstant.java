@@ -9,6 +9,7 @@ public class TPConstant {
 	public final static int BACK_W = 330;
 	public final static int BACK_H = 470;
 	public final static Color BACK_COLOR = new Color(255,230,181);
+	public final static Color BTN_COLOR = new Color(240, 255, 240);
 	
 	public final static String EATING = "맛집";
 	public final static String SEEING = "관광";
@@ -17,7 +18,7 @@ public class TPConstant {
 	// Frame
 	public final static String APPNAME = "8low-Go To Travel!";
 	public final static Color FRAME_COLOR = new Color(255,230,181);
-	public final static Font FRAME_FONT = new Font("AmeriGarmnd BT", Font.PLAIN, 12);
+	public final static Font FRAME_FONT = new Font("AmeriGarmnd BT", Font.BOLD, 12);
 	public final static Image ICON_IMG = Toolkit.getDefaultToolkit().getImage("rsc/icon.gif");
 	
 	// StartPanel
@@ -26,12 +27,10 @@ public class TPConstant {
 	// SelectPanel
 	
 	// basic setting
-	public final static Font SLTP_KOREAN_FONT = new Font("365복고언니", Font.PLAIN, 12);
-	public final static Font SLTP_ENGLISH_FONT = new Font("365Shy", Font.PLAIN, 13);
-	public final static Color BTN_COLOR = new Color(240, 255, 240);
+	public final static Font SLTP_KOREAN_FONT = new Font("1훈그림동화 R", Font.PLAIN, 14);
+	public final static Font SLTP_ENGLISH_FONT = new Font("Arial", Font.BOLD, 12);
 	
 	// string setting
-	public final static int MAIN_REGION_NUM = 2;
 	public final static String[] MAIN_REGION_LIST = {"선택","용인"};
 	public final static String[][] SUB_REGION_LIST = {{"선택"},
 			{"선택", "처인구", "기흥구", "수지구"}};
@@ -66,6 +65,9 @@ public class TPConstant {
 	public final static int RUN_BTN_HEIGHT = 30;
 	
 	// MapPanel
+	public final static Font MP_CHANGE_FONT = new Font("1훈그림동화 R", Font.PLAIN, 15);
+	public final static Font MP_TEXT_FONT = new Font("1훈그림동화 R", Font.PLAIN, 10);
+	
 	public enum EMapExplainState {on, off;}
 	public enum EMapChangeState {on, off;}
 	
@@ -85,10 +87,10 @@ public class TPConstant {
 	
 	public enum ECourseButtons {
 		first(0, new Rectangle(10, 10, 44, 56)),
-		second(1, new Rectangle(105, 70, 44, 56)),
-		third(2, new Rectangle(195, 120, 44, 56)),
-		fourth(3, new Rectangle(120, 180, 44, 56)),
-		fifth(4, new Rectangle(30, 230, 44, 56));
+		second(1, new Rectangle(120, 60, 44, 56)),
+		third(2, new Rectangle(215, 120, 44, 56)),
+		fourth(3, new Rectangle(120, 190, 44, 56)),
+		fifth(4, new Rectangle(10, 250, 44, 56));
 		
 		private int num;
 		private Rectangle bound;
@@ -101,65 +103,92 @@ public class TPConstant {
 		}
 	}
 	
-	public final static String[] BASE_SELECT = {"선택", "선택", "선택"};
 	public enum ECourseComboBoxs {
-		first(new Rectangle(10, 60, 100, 30)),
-		second(new Rectangle(90, 120, 100, 30)),
-		third(new Rectangle(175, 170, 100, 30)),
-		fourth(new Rectangle(100, 230, 100, 30)),
-		fifth(new Rectangle(25, 280, 100, 30));
+		first(0, new Rectangle(10, 60, 100, 30)),
+		second(1, new Rectangle(100, 110, 100, 30)),
+		third(2, new Rectangle(175, 170, 100, 30)),
+		fourth(3, new Rectangle(100, 240, 100, 30)),
+		fifth(4, new Rectangle(10, 290, 100, 30));
 		
+		private int num;
 		private String[] itemList;	
 		private Rectangle bound;
+		public int getNum() {return num;}
 		public String[] getItemList() {return itemList;}
-		public void setItemList(String[] itemList) {this.itemList = itemList;}
 		public Rectangle getBound() {return bound;}
+		
+		public void setItemList(String[] itemList) {this.itemList = itemList;}
 	
-		private ECourseComboBoxs(Rectangle bound) {
-			this.itemList = BASE_SELECT;
+		private ECourseComboBoxs(int num, Rectangle bound) {
+			this.num = num;
 			this.bound = bound;
 		}
 	}
 	
 	public enum ECourseTexts {
-		first(new Rectangle(10, 60, 100, 70)),
-		second(new Rectangle(90, 120, 100, 70)),
-		third(new Rectangle(95, 110, 100, 70)),
-		fourth(new Rectangle(100, 230, 100, 70)),
-		fifth(new Rectangle(25, 170, 100, 70));
+		first(0, 10, 60),
+		second(1, 100, 110),
+		third(2, 115, 120),
+		fourth(3, 100, 130),
+		fifth(4, 10, 190);
 		
-		private Rectangle bound;
-		public Rectangle getBound() {return bound;}
+		private int num, x, y;
+		public int getNum() {return num;}
+		public int getX() {return x;}
+		public int getY() {return y;}
 	
-		private ECourseTexts(Rectangle bound) {
-			this.bound = bound;
+		private ECourseTexts(int num, int x, int y) {
+			this.num = num;
+			this.x = x;
+			this.y = y;
 		}
 	}
 	
+	// MapPanel - line
+	public final static int ML1_X1 = 40;
+	public final static int ML1_Y1 = 60;
+	public final static int ML1_X2 = 250;
+	public final static int ML1_Y2 = 180;
+	
+	public final static int ML2_X1 = 245;
+	public final static int ML2_Y1 = 170;
+	public final static int ML2_X2 = 50;
+	public final static int ML2_Y2 = 290;
+	
 	// Calculator
 	public final static int COURSE_NUM = 5;
-	public final static int CHANGE_NUM = 5;
+	public final static int CHANGE_NUM = 3;
+	public final static int DATA_POOL_NUM = 20;
+	
+	public final static int DB_LOC_D_ID = 2;
+	public final static int DB_LOC_NAME = 3;
+	public final static int DB_LOC_ADDRES = 4;
+	public final static int DB_LOC_TEL = 5;
+	public final static int DB_LOC_THEME = 6;
+	public final static int DB_LOC_DISTANCE = 7;
+	public final static int DB_LOC_CONTENT = 8;
+	public final static int DB_LOC_LINK = 9;
 	
 	//DBManager
 	public final static String JDBC_DRIVER = "com.mysql.jdbc.Driver";
 	public final static String DB_URL = "jdbc:mysql://localhost:3306/team_8low";
 	public final static String USERNAME = "root";
-	public final static String PASSWORD = "gks123";
+	public final static String PASSWORD = "team8low";
 	
-	public static enum sqlList{findCity, findAllCity, findDistrict, findAllDistrict, findLocation, findAllLocation, addCity, addDistrict, addLocation, deleteCity, deleteDistrict, deleteLocation};
+	public static enum ESQLList { FIND_CITY, FIND_ALL_CITY, FIND_DISTRICT, FIND_ALL_DISTRICT, FIND_LOCATION, FIND_ALL_LOCATION, ADD_CITY, ADD_DISTRICT, ADD_LOCATION, DELETE_CITY, DELETE_DISTRICT, DELETE_LOCATION};
 	
-	public final static String findCity = "SELECT c_id, c_name FROM city WHERE c_id=?";
-	public final static String findAllCity = "SELECT c_id, c_name FROM city ORDER BY c_id DESC";
-	public final static String findDistrict = "SELECT c_id, d_id, d_name FROM district WHERE d_id=?";
-	public final static String findAllDistrict = "SELECT c_id, d_id, d_name FROM district ORDER BY d_id DESC";
-	public final static String findLocation = "SELECT l_id, d_id, l_name, l_adress, l_tel, l_theme, l_distance, l_content, l_link FROM location WHERE l_id=?";
-	public final static String findAllLocation = "SELECT l_id, d_id, l_name, l_adress, l_tel, l_theme, l_distance, l_content, l_link FROM location ORDER BY l_id DESC";
+	public final static String FIND_CITY = "SELECT c_id, c_name FROM city WHERE c_id=?";
+	public final static String FIND_ALL_CITY = "SELECT c_id, c_name FROM city ORDER BY c_id DESC";
+	public final static String FIND_DISTRICT = "SELECT c_id, d_id, d_name FROM district WHERE d_id=?";
+	public final static String FIND_ALL_DISTRICT = "SELECT c_id, d_id, d_name FROM district ORDER BY d_id DESC";
+	public final static String FIND_LOCATION = "SELECT l_id, d_id, l_name, l_adress, l_tel, l_theme, l_distance, l_content, l_link FROM location WHERE l_id=?";
+	public final static String FIND_ALL_LOCATION = "SELECT l_id, d_id, l_name, l_adress, l_tel, l_theme, l_distance, l_content, l_link FROM location ORDER BY l_id DESC";
 	
-	public final static String addCity = "INSERT INTO city (c_name) VALUES (?)";
-	public final static String addDistrict = "INSERT INTO district (c_id, d_name) VALUES (?, ?)";
-	public final static String addLocation = "INSERT INTO location (d_id, l_name, l_adress, l_tel, l_theme, l_distance, l_content, l_link) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+	public final static String ADD_CITY = "INSERT INTO city (c_name) VALUES (?)";
+	public final static String ADD_DISTRICT = "INSERT INTO district (c_id, d_name) VALUES (?, ?)";
+	public final static String ADD_LOCATION = "INSERT INTO location (d_id, l_name, l_adress, l_tel, l_theme, l_distance, l_content, l_link) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 	
-	public final static String deleteCity = "DELETE FROM city WHERE c_id=?";
-	public final static String deleteDistrict = "DELETE FROM district WHERE d_id=?";
-	public final static String deleteLocation = "DELETE FROM location WHERE l_id=?";
+	public final static String DELETE_CITY = "DELETE FROM city WHERE c_id=?";
+	public final static String DELETE_DISTRICT = "DELETE FROM district WHERE d_id=?";
+	public final static String DELETE_LOCATION = "DELETE FROM location WHERE l_id=?";
 }

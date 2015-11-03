@@ -2,7 +2,7 @@ package panels;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Vector;
+import java.util.ArrayList;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -17,12 +17,13 @@ public class TPSelectPanel extends JPanel {
 	private static final long serialVersionUID = 1L;
 	// components
 	private TPMapPanel mapPanel;
-	private Vector<JComboBox<String>> comboBoxs;
+	private ArrayList<JComboBox<String>> comboBoxs;
 	// associations
 	private TPCalculator calc;
 	// working variables
 	private String[] selectedItem;
-	private Vector<ActionListener> listeners;
+	//private ArrayList<ActionListener> listeners;
+	private ActionListener[] listeners;
 
 	public TPSelectPanel() {
 		// attributes initialization
@@ -32,7 +33,7 @@ public class TPSelectPanel extends JPanel {
 		this.setLayout(null);
 
 		// components initialization
-		comboBoxs = new Vector<JComboBox<String>>();
+		comboBoxs = new ArrayList<JComboBox<String>>();
 		this.makeListener();
 		int index = 0; // only use in below for statement
 		for (ESelectComboBoxs comboBox : ESelectComboBoxs.values()) {
@@ -40,7 +41,7 @@ public class TPSelectPanel extends JPanel {
 			temp.setFont(TPConstant.SLTP_KOREAN_FONT);
 			temp.setBackground(TPConstant.BTN_COLOR);
 			temp.setBounds(comboBox.getBound());
-			temp.addActionListener(listeners.get(index));
+			temp.addActionListener(listeners[index]);
 			comboBoxs.add(temp);
 			this.add(temp);
 			index++;
@@ -76,10 +77,10 @@ public class TPSelectPanel extends JPanel {
 	}
 
 	private void makeListener() {
-		listeners = new Vector<ActionListener>();
-		listeners.add(new MainRegionListener());
-		listeners.add(new SubRegionListener());
-		listeners.add(new ThemeListener());
+		listeners = new ActionListener[3];
+		listeners[0] = new MainRegionListener();
+		listeners[1] = new SubRegionListener();
+		listeners[2] = new ThemeListener();
 	}
 
 	private class MainRegionListener implements ActionListener {
@@ -89,7 +90,7 @@ public class TPSelectPanel extends JPanel {
 			// sub_region combo box
 			selectedItem[TPConstant.MAIN_REGION_INDEX] = (String) comboBoxs.get(TPConstant.MAIN_REGION_INDEX)
 					.getSelectedItem();
-			for (int i = 0; i < TPConstant.MAIN_REGION_NUM; i++) {
+			for (int i = 0; i < TPConstant.MAIN_REGION_LIST.length; i++) {
 				if (selectedItem[TPConstant.MAIN_REGION_INDEX] == TPConstant.MAIN_REGION_LIST[i]) {
 					comboBoxs.get(TPConstant.SUB_REGION_INDEX).removeAllItems();
 					for (String item : TPConstant.SUB_REGION_LIST[i]) {

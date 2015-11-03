@@ -8,13 +8,13 @@ import java.sql.SQLException;
 import java.util.Map;
 
 import constants.TPConstant;
-import constants.TPConstant.sqlList;
+import constants.TPConstant.ESQLList;
 
 public class DBManager {
 	private Connection con;
-	private static DBManager uniqueManager = new DBManager();
+	private static DBManager uniqueManager;
 	
-	public DBManager () {
+	private DBManager () {
 		try {
 			Class.forName(TPConstant.JDBC_DRIVER);
 			con = DriverManager.getConnection(TPConstant.DB_URL, TPConstant.USERNAME, TPConstant.PASSWORD);
@@ -23,25 +23,32 @@ public class DBManager {
 		} catch(SQLException e) {System.out.println("데이터 베이스 접속 실패");}
 	}
 	
-	public static DBManager getInstance () {return uniqueManager;}
+	public static DBManager getInstance () {
+		if(uniqueManager != null) {
+			// empty
+		} else {
+			uniqueManager = new DBManager();
+		}
+		return uniqueManager;
+	}
 	
-	public int insert(sqlList sqlVar, Map<String, Object> param) {
+	public int insert(ESQLList sqlVar, Map<String, Object> param) {
 		String sql = null;
 		PreparedStatement pstmt = null;
 		int result = -1;
 		try {
-			if (sqlVar.equals(sqlList.addCity)) {
-				sql = TPConstant.addCity;
+			if (sqlVar.equals(ESQLList.ADD_CITY)) {
+				sql = TPConstant.ADD_CITY;
 				pstmt = con.prepareStatement(sql);
 				pstmt.setString(1, (String)(param.get("c_name")));
 			}
-			else if (sqlVar.equals(sqlList.addDistrict)) {
-				sql = TPConstant.addDistrict;
+			else if (sqlVar.equals(ESQLList.ADD_DISTRICT)) {
+				sql = TPConstant.ADD_DISTRICT;
 				pstmt = con.prepareStatement(sql);
 				pstmt.setString(1, (String)(param.get("d_name")));
 			}
-			else if (sqlVar.equals(sqlList.addLocation)) {
-				sql = TPConstant.addLocation;
+			else if (sqlVar.equals(ESQLList.ADD_LOCATION)) {
+				sql = TPConstant.ADD_LOCATION;
 				pstmt = con.prepareStatement(sql);
 				pstmt.setString(1, (String)(param.get("l_name")));
 			}
@@ -52,23 +59,23 @@ public class DBManager {
 		return result;
 	}
 	
-	public int delete(sqlList sqlVar, Map<String, Object> param) {
+	public int delete(ESQLList sqlVar, Map<String, Object> param) {
 		String sql = null;
 		PreparedStatement pstmt = null;
 		int result = -1;
 		try {
-			if (sqlVar.equals(sqlList.deleteCity)) {
-				sql = TPConstant.deleteCity;
+			if (sqlVar.equals(ESQLList.DELETE_CITY)) {
+				sql = TPConstant.DELETE_CITY;
 				pstmt = con.prepareStatement(sql);
 				pstmt.setString(1, (String)(param.get("c_name")));
 			}
-			else if (sqlVar.equals(sqlList.deleteDistrict)) {
-				sql = TPConstant.deleteDistrict;
+			else if (sqlVar.equals(ESQLList.DELETE_DISTRICT)) {
+				sql = TPConstant.DELETE_DISTRICT;
 				pstmt = con.prepareStatement(sql);
 				pstmt.setString(1, (String)(param.get("d_name")));
 			}
-			else if (sqlVar.equals(sqlList.deleteLocation)) {
-				sql = TPConstant.deleteLocation;
+			else if (sqlVar.equals(ESQLList.DELETE_LOCATION)) {
+				sql = TPConstant.DELETE_LOCATION;
 				pstmt = con.prepareStatement(sql);
 				pstmt.setString(1, (String)(param.get("l_name")));
 			}
@@ -80,23 +87,23 @@ public class DBManager {
 	}
 	
 	
-	public ResultSet select(sqlList sqlVar, Map<String, Object> param) {
+	public ResultSet select(ESQLList sqlVar, Map<String, Object> param) {
 		ResultSet rs = null;
 		String sql = null;
 		PreparedStatement pstmt = null;
 		try {
-			if (sqlVar.equals(sqlList.findCity)) {
-				sql = TPConstant.findCity;
+			if (sqlVar.equals(ESQLList.FIND_CITY)) {
+				sql = TPConstant.FIND_CITY;
 				pstmt = con.prepareStatement(sql);
 				pstmt.setInt(1, (int) param.get("c_id"));
 			}
-			else if (sqlVar.equals(sqlList.findDistrict)) {
-				sql = TPConstant.findDistrict;
+			else if (sqlVar.equals(ESQLList.FIND_DISTRICT)) {
+				sql = TPConstant.FIND_DISTRICT;
 				pstmt = con.prepareStatement(sql);
 				pstmt.setInt(1, (int) param.get("d_id"));
 			}
-			else if (sqlVar.equals(sqlList.findLocation)) {
-				sql = TPConstant.findLocation;
+			else if (sqlVar.equals(ESQLList.FIND_LOCATION)) {
+				sql = TPConstant.FIND_LOCATION;
 				pstmt = con.prepareStatement(sql);
 				pstmt.setInt(1, (int) param.get("l_id"));
 			}

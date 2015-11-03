@@ -1,26 +1,28 @@
 package data;
 
-import java.awt.Point;
-
 public class TPData {
-	public enum EData {
-		date1("처인구", "맛집", "이름", 5, new Point(2,3)),
-		date2("처인구", "관광", "이름", 5, new Point(2,3)),
-		date3("처인구", "휴식", "이름", 5, new Point(2,3)),
-		date4("처인구", "맛집", "이름", 5, new Point(2,3)),
-		date5("처인구", "휴식", "이름", 5, new Point(2,3));
+		private String name, address, tel, theme, content, link;
+		private float distance;
 		
-		String region, theme, name;
-		int score; // 1 - 5 score, 5 is best
-		Point coordinate;
-		private EData(String region, String theme, String name, int score, Point coordinate) {
-			this.region = region;
-			this.theme = theme;
-			this.score = score;
-			this.coordinate = coordinate;
+		public TPData() {
+			name = address = tel = theme = content = link = null;
+			distance = 0;
 		}
-		public String getRegion() {return region;}
-		public String getTheme() {return theme;}
+
 		public String getName() {return name;}
-	}
+		public String getAddress() {return address;}
+		public String getTel() {return tel;}
+		public String getTheme() {return theme;}
+		public String getContent() {return content;}
+		public String getLink() {return link;}
+		public float getDistance() {return distance;}
+		
+		public void setName(String name) {this.name = name;}
+		public void setAddress(String address) {this.address = address;}
+		public void setTel(String tel) {this.tel = tel;}
+		public void setTheme(String theme) {this.theme = theme;}
+		public void setContent(String content) {this.content = content;}
+		public void setLink(String link) {this.link = link;}
+		public void setDistance(float distance) {this.distance = distance;}
+		
 }
