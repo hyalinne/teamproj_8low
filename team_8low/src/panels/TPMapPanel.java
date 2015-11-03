@@ -18,7 +18,8 @@ import constants.TPConstant;
 import constants.TPConstant.ECourseButtons;
 import constants.TPConstant.ECourseComboBoxs;
 import constants.TPConstant.ECourseTexts;
-import constants.TPConstant.EMapButtonState;
+import constants.TPConstant.EMapChangeState;
+import constants.TPConstant.EMapExplainState;
 import data.TPData.EData;
 
 public class TPMapPanel extends JPanel {
@@ -31,7 +32,8 @@ public class TPMapPanel extends JPanel {
 	private EData[][] course;
 	private Vector<JComboBox<String>> changes;
 	private TextField[] explains;
-	private EMapButtonState eState;
+	private EMapExplainState eEState;
+	private EMapChangeState eCState;
 	
 	public TPMapPanel() {
 		// attributes initialization
@@ -46,7 +48,8 @@ public class TPMapPanel extends JPanel {
 		// working variables initialization
 		changes = new Vector<JComboBox<String>>();
 		explains = new TextField[5];
-		eState = EMapButtonState.idle;
+		eEState = EMapExplainState.off;
+		eCState = EMapChangeState.off;
 	}
 	
 	public void makeButtons() {
@@ -67,10 +70,20 @@ public class TPMapPanel extends JPanel {
 			button.setFocusPainted(false);
 			button.addMouseListener(new MouseListener() {
 				@Override
-				public void mouseReleased(MouseEvent e) {}
+				public void mouseReleased(MouseEvent e) {
+					if(eEState == EMapExplainState.on) {
+						explains[temp.getNum()].setVisible(false);
+						eEState = EMapExplainState.off;
+					}
+				}
 				@Override
-				public void mousePressed(MouseEvent e) {}
-				@Override
+				public void mousePressed(MouseEvent e) {
+					if(eEState == EMapExplainState.off) {
+						explains[temp.getNum()].setVisible(true);
+						eEState = EMapExplainState.on;
+					}
+				}
+				@Override 
 				public void mouseExited(MouseEvent e) {}
 				@Override
 				public void mouseEntered(MouseEvent e) {}
@@ -78,20 +91,16 @@ public class TPMapPanel extends JPanel {
 				@Override
 				public void mouseClicked(MouseEvent e) {
 					// TODO Auto-generated method stub
-					if (e.getClickCount() == 1) {
-						if(eState == EMapButtonState.select) {
-							changes.get(temp.getNum()).setVisible(false);
-							eState = EMapButtonState.idle;
-						} else if(eState == EMapButtonState.idle) {
-							explains[temp.getNum()].setVisible(true);
-							eState = EMapButtonState.explain;
-						} else if(eState == EMapButtonState.explain) {
-							explains[temp.getNum()].setVisible(true);
-							eState = EMapButtonState.idle;
+					if(e.getClickCount() == 2) {
+						if(eCState == EMapChangeState.off) {
+							changes.get(temp.getNum()).setVisible(true);
+							eCState = EMapChangeState.on;
 						}
-					} else if (e.getClickCount() == 2) {
-						changes.get(temp.getNum()).setVisible(true);
-						eState = EMapButtonState.select;
+					} else {
+						if(eCState == EMapChangeState.on) {
+							changes.get(temp.getNum()).setVisible(false);
+							eCState = EMapChangeState.off;
+						}
 					}
 				}
 			});
@@ -121,8 +130,10 @@ public class TPMapPanel extends JPanel {
 		for(ECourseTexts temp : ECourseTexts.values()) {
 			explains[index] = new TextField();
 			explains[index].setBounds(temp.getBound());
+			explains[index].setBackground(TPConstant.MP_COLOR);
 			explains[index].setVisible(false);
 			this.add(explains[index]);
+			index++;
 		}
 	}
 	

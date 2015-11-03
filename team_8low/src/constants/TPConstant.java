@@ -66,7 +66,8 @@ public class TPConstant {
 	public final static int RUN_BTN_HEIGHT = 30;
 	
 	// MapPanel
-	public enum EMapButtonState {idle, explain, select;}
+	public enum EMapExplainState {on, off;}
+	public enum EMapChangeState {on, off;}
 	
 	public final static Color MP_COLOR = Color.WHITE;
 	public final static int MP_X = 12;
@@ -121,11 +122,11 @@ public class TPConstant {
 	}
 	
 	public enum ECourseTexts {
-		first(new Rectangle(10, 10, 100, 80)),
-		second(new Rectangle(90, 120, 100, 50)),
-		third(new Rectangle(175, 170, 100, 50)),
-		fourth(new Rectangle(100, 230, 100, 50)),
-		fifth(new Rectangle(25, 280, 100, 50));
+		first(new Rectangle(10, 60, 100, 70)),
+		second(new Rectangle(90, 120, 100, 70)),
+		third(new Rectangle(95, 110, 100, 70)),
+		fourth(new Rectangle(100, 230, 100, 70)),
+		fifth(new Rectangle(25, 170, 100, 70));
 		
 		private Rectangle bound;
 		public Rectangle getBound() {return bound;}
@@ -138,4 +139,27 @@ public class TPConstant {
 	// Calculator
 	public final static int COURSE_NUM = 5;
 	public final static int CHANGE_NUM = 5;
+	
+	//DBManager
+	public final static String JDBC_DRIVER = "com.mysql.jdbc.Driver";
+	public final static String DB_URL = "jdbc:mysql://localhost:3306/team_8low";
+	public final static String USERNAME = "root";
+	public final static String PASSWORD = "gks123";
+	
+	public static enum sqlList{findCity, findAllCity, findDistrict, findAllDistrict, findLocation, findAllLocation, addCity, addDistrict, addLocation, deleteCity, deleteDistrict, deleteLocation};
+	
+	public final static String findCity = "SELECT c_id, c_name FROM city WHERE c_id=?";
+	public final static String findAllCity = "SELECT c_id, c_name FROM city ORDER BY c_id DESC";
+	public final static String findDistrict = "SELECT c_id, d_id, d_name FROM district WHERE d_id=?";
+	public final static String findAllDistrict = "SELECT c_id, d_id, d_name FROM district ORDER BY d_id DESC";
+	public final static String findLocation = "SELECT l_id, d_id, l_name, l_adress, l_tel, l_theme, l_distance, l_content, l_link FROM location WHERE l_id=?";
+	public final static String findAllLocation = "SELECT l_id, d_id, l_name, l_adress, l_tel, l_theme, l_distance, l_content, l_link FROM location ORDER BY l_id DESC";
+	
+	public final static String addCity = "INSERT INTO city (c_name) VALUES (?)";
+	public final static String addDistrict = "INSERT INTO district (c_id, d_name) VALUES (?, ?)";
+	public final static String addLocation = "INSERT INTO location (d_id, l_name, l_adress, l_tel, l_theme, l_distance, l_content, l_link) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+	
+	public final static String deleteCity = "DELETE FROM city WHERE c_id=?";
+	public final static String deleteDistrict = "DELETE FROM district WHERE d_id=?";
+	public final static String deleteLocation = "DELETE FROM location WHERE l_id=?";
 }

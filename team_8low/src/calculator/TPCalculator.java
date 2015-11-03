@@ -1,7 +1,12 @@
 package calculator;
 
+import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.Map;
+
 import constants.TPConstant;
 import data.TPData.EData;
+import databases.DBManager;
 
 public class TPCalculator {
 	// attributes
@@ -14,19 +19,32 @@ public class TPCalculator {
 	// associations
 	// working variables
 	private String[] selectedItem;
+	private Map<String, Object> param; //map쓸꺼양!
+	private DBManager db;//선언해줄랭!!!
+	private String test;
 	
-	private TPCalculator() {
+	public TPCalculator() {
 		// attributes initialization
 		// components initialization
 		eatingPool = new EData[20];
 		seeingPool = new EData[20];
 		sleepingPool = new EData[20];
 		course = new EData[TPConstant.COURSE_NUM][TPConstant.CHANGE_NUM];
+		param = new HashMap<String, Object>();//Map쓸려고 만듬
+		db = new DBManager();//디비쓸꺼양ㅎㅎㅎ
+		DBManager.getInstance();//DB 가져올꺼양!
 	}
 	
 	public void init() {
 		// associations initialization;
 		// working variable initialization
+		try {
+			param.put("l_id", 1);//location table에서 l_id에 있는 친구 가져와서 l_id = ? ?=1이 되는 걸 가져올랭!
+			test = db.select(TPConstant.sqlList.findLocation, param).getString(3);//location table에서 3번째에 있는 colum에서 값을 가져올래용 ㅎㅎ
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
 	}
 	
 	public static TPCalculator getInstance() {
@@ -43,6 +61,7 @@ public class TPCalculator {
 	}
 	
 	public void dataSort() {
+		System.out.println("check " + test);
 		// mainRegion & subRegion 에서 Data를 가져와서 Theme 에 따라 pool 에 저장
 		
 	}
