@@ -1,8 +1,7 @@
 package panels;
 
-import java.awt.BasicStroke;
+import java.awt.Font;
 import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.awt.TextArea;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -12,6 +11,7 @@ import java.awt.event.MouseListener;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import calculator.TPCalculator;
@@ -29,6 +29,7 @@ public class TPMapPanel extends JPanel {
 	// components
 	private JComboBox<String>[] changes;
 	private TextArea[] explains;
+	private JLabel warning;
 	// associations
 	private TPCalculator calc;
 	// working variables
@@ -41,15 +42,20 @@ public class TPMapPanel extends JPanel {
 		// attributes initialization
 		this.setBounds(TPConstant.MP_X, TPConstant.MP_Y, TPConstant.MP_WIDTH, TPConstant.MP_HEIGHT);
 		this.setLayout(null);
+		this.setBackground(TPConstant.MP_COLOR);
 		// components initialization
 		changes = new JComboBox[5];
 		explains = new TextArea[5];
+		warning = new JLabel(TPConstant.MP_WARN_MSG);
+		warning.setBounds(TPConstant.MP_WARN_X, TPConstant.MP_WARN_Y, TPConstant.MP_WARN_WIDTH, TPConstant.MP_WARN_HEIGHT);
+		warning.setFont(TPConstant.MP_WARN_FONT);
+		warning.setVisible(false);
+		this.add(warning);
 	}
 	
 	public void init() {
 		// associations initialization
 		calc = TPCalculator.getInstance();
-		// working variables initialization
 		run = false;
 		eEState = EMapExplainState.off;
 		eCState = EMapChangeState.off;
@@ -152,10 +158,32 @@ public class TPMapPanel extends JPanel {
 	public void view() {
 		run = true;
 		course = calc.getCourse();
+		if(!this.check()) {
+			this.removeAll();
+			this.add(warning);
+			this.warning.setVisible(true);
+			run = false;
+			repaint();
+			return;
+		} else {
+			this.warning.setVisible(false);
+		}
+		this.removeAll();
 		this.makeChanges();
 		this.makeTexts();
 		this.makeButtons();
 		repaint();
+	}
+	
+	private boolean check() {
+		for(int i = 0; i < TPConstant.COURSE_NUM; i++) {
+			for(int j = 0; j < TPConstant.CHANGE_NUM; j++) {
+				if(course[i][j] == null) {
+					return false;
+				}
+			}
+		}
+		return true;
 	}
 
 	public void change(int change_index, int select_index) {
@@ -174,13 +202,8 @@ public class TPMapPanel extends JPanel {
 	@Override
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
-		g.drawImage(TPConstant.MAP_IMG, 0, 0, this.getWidth(), this.getHeight(), this);
 		if(run) {
-			Graphics2D g2 = (Graphics2D)g;
-			float dash[] = {10.0f};
-			g2.setStroke(new BasicStroke(3.0f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 10.0f, dash, 0));
-			g2.drawLine(TPConstant.ML1_X1, TPConstant.ML1_Y1, TPConstant.ML1_X2, TPConstant.ML1_Y2);
-			g2.drawLine(TPConstant.ML2_X1, TPConstant.ML2_Y1, TPConstant.ML2_X2, TPConstant.ML2_Y2);
+			g.drawImage(TPConstant.MAP_IMG, 0, 0, this.getWidth(), this.getHeight(), this);
 		}
 	}
 	

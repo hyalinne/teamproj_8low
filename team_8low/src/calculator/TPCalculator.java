@@ -12,17 +12,17 @@ public class TPCalculator {
 	// attributes
 	private static TPCalculator calculatorInstance;
 	// components
+	private DBManager db;
+	private Map<String, Object> param;
 	private TPData[] eatingPool;
 	private TPData[] seeingPool;
 	private TPData[] sleepingPool;
 	private TPData[][] course;
-	private DBManager db;
-	private Map<String, Object> param;
 	// associations
 	// working variables
 	private String[] selectedItem;
 	
-	public TPCalculator() {
+	private TPCalculator() {
 		// attributes initialization
 		// components initialization
 		eatingPool = new TPData[TPConstant.DATA_POOL_NUM];
@@ -33,9 +33,26 @@ public class TPCalculator {
 		db = DBManager.getInstance();
 	}
 	
-	public void init() {
+	private void dataPoolInit() {
 		// associations initialization;
 		// working variable initialization
+		for(int i = 0; i < TPConstant.DATA_POOL_NUM; i++) {
+			this.eatingPool[i] = null;
+		}
+		for(int i = 0; i < TPConstant.DATA_POOL_NUM; i++) {
+			this.seeingPool[i] = null;
+		}
+		for(int i = 0; i < TPConstant.DATA_POOL_NUM; i++) {
+			this.sleepingPool[i] = null;
+		}
+	}
+	
+	private void courseInit() {
+		for(int i = 0; i < TPConstant.COURSE_NUM; i ++) {
+			for(int j = 0; j < TPConstant.CHANGE_NUM; j++) {
+				this.course[i][j] = null;
+			}
+		}
 	}
 	
 	// Singleton
@@ -48,13 +65,15 @@ public class TPCalculator {
 
 	// SelectPanel 에서 Run 버튼이 눌러졌을 때 동작.
 	public void calculate(String[] selectedItem) {
+		this.dataPoolInit();
+		this.courseInit();
 		this.selectedItem = selectedItem;
-		this.dataSort();
+		this.dataPush();
 		this.courseSort();
 	}
 	
 	// 조건에 맞는 Data 를 불러온다.
-	public void dataSort() {
+	private void dataPush() {
 		int main_index, sub_index;
 		int eating_index = 0, seeing_index = 0, sleeping_index = 0;
 		for(main_index = 0; main_index < TPConstant.MAIN_REGION_LIST.length; main_index++) {
@@ -99,56 +118,101 @@ public class TPCalculator {
 		}
 	}
 	
+	private int partition(TPData arr[], int left, int right) {
+	      int i = left, j = right;
+	      TPData tmp;
+	      TPData pivot = arr[(left + right) / 2];
+	     
+	      while (i <= j) {
+	            while (arr[i].getDistance() < pivot.getDistance())
+	                  i++;
+	            while (arr[j].getDistance() > pivot.getDistance())
+	                  j--;
+	            if (i <= j) {
+	                  tmp = arr[i];
+	                  arr[i] = arr[j];
+	                  arr[j] = tmp;
+	                  i++;
+	                  j--;
+	            }
+	      };
+	     
+	      return i;
+	}
+	 
+	private void quickSort(TPData arr[], int left, int right) {
+	      int index = partition(arr, left, right);
+	      if (left < index - 1)
+	            quickSort(arr, left, index - 1);
+	      if (index < right)
+	            quickSort(arr, index, right);
+	}
 	
-	// courseSort 는 임시로 사용.
+	private void dataSort() {
+		int eating_index, seeing_index, sleeping_index;
+		for(eating_index = 0; eatingPool[eating_index] != null;) {eating_index++;}
+		for(seeing_index = 0; seeingPool[seeing_index] != null;) {seeing_index++;}
+		for(sleeping_index = 0; sleepingPool[sleeping_index] != null;) {sleeping_index++;}
+		quickSort(eatingPool, 0, eating_index - 1);
+		quickSort(seeingPool, 0, seeing_index - 1);
+		quickSort(sleepingPool, 0, sleeping_index - 1);
+	}
+	
 	public void courseSort() {
+		this.dataSort();
 		if(selectedItem[TPConstant.THEME_INDEX] == TPConstant.EATING) {
 			course[0][0] = eatingPool[0];
-			course[0][1] = eatingPool[1];
-			course[0][2] = eatingPool[2];
 			course[1][0] = seeingPool[0];
-			course[1][1] = seeingPool[1];
-			course[1][2] = seeingPool[2];
-			course[2][0] = eatingPool[3];
-			course[2][1] = eatingPool[4];
-			course[2][2] = eatingPool[5];
-			course[3][0] = seeingPool[3];
-			course[3][1] = seeingPool[4];
-			course[3][2] = seeingPool[5];
+			course[2][0] = eatingPool[1];
+			course[3][0] = seeingPool[1];
 			course[4][0] = sleepingPool[0];
+			
+			course[0][1] = eatingPool[2];
+			course[1][1] = seeingPool[2];
+			course[2][1] = eatingPool[3];
+			course[3][1] = seeingPool[3];
 			course[4][1] = sleepingPool[1];
+			
+			course[0][2] = eatingPool[4];
+			course[1][2] = seeingPool[4];
+			course[2][2] = eatingPool[5];
+			course[3][2] = seeingPool[5];
 			course[4][2] = sleepingPool[2];
 		} else if(selectedItem[TPConstant.THEME_INDEX] == TPConstant.SEEING) {
-			course[0][0] = eatingPool[0];
-			course[0][1] = eatingPool[1];
-			course[0][2] = eatingPool[2];
-			course[1][0] = seeingPool[0];
-			course[1][1] = seeingPool[1];
-			course[1][2] = seeingPool[2];
-			course[2][0] = eatingPool[3];
-			course[2][1] = eatingPool[4];
-			course[2][2] = eatingPool[5];
-			course[3][0] = seeingPool[3];
-			course[3][1] = seeingPool[4];
-			course[3][2] = seeingPool[5];
+			course[0][0] = seeingPool[0];
+			course[1][0] = eatingPool[0];
+			course[2][0] = seeingPool[1];
+			course[3][0] = eatingPool[1];
 			course[4][0] = sleepingPool[0];
+			
+			course[0][1] = seeingPool[2];
+			course[1][1] = eatingPool[2];
+			course[2][1] = seeingPool[3];
+			course[3][1] = eatingPool[3];
 			course[4][1] = sleepingPool[1];
+			
+			course[0][2] = seeingPool[4];
+			course[1][2] = eatingPool[4];
+			course[2][2] = seeingPool[5];
+			course[3][2] = eatingPool[5];
 			course[4][2] = sleepingPool[2];
 		} else if(selectedItem[TPConstant.THEME_INDEX] == TPConstant.SLEEPING) {
 			course[0][0] = eatingPool[0];
-			course[0][1] = eatingPool[1];
-			course[0][2] = eatingPool[2];
 			course[1][0] = seeingPool[0];
-			course[1][1] = seeingPool[1];
-			course[1][2] = seeingPool[2];
-			course[2][0] = eatingPool[3];
-			course[2][1] = eatingPool[4];
-			course[2][2] = eatingPool[5];
-			course[3][0] = seeingPool[3];
-			course[3][1] = seeingPool[4];
-			course[3][2] = seeingPool[5];
+			course[2][0] = eatingPool[1];
+			course[3][0] = seeingPool[1];
 			course[4][0] = sleepingPool[0];
+			
+			course[0][1] = eatingPool[2];
+			course[1][1] = seeingPool[2];
+			course[2][1] = eatingPool[3];
+			course[3][1] = seeingPool[3];
 			course[4][1] = sleepingPool[1];
+			
+			course[0][2] = eatingPool[4];
+			course[1][2] = seeingPool[4];
+			course[2][2] = eatingPool[5];
+			course[3][2] = seeingPool[5];
 			course[4][2] = sleepingPool[2];
 		} else {
 			// Testing 

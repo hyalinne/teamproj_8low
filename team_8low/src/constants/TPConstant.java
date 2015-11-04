@@ -65,8 +65,15 @@ public class TPConstant {
 	public final static int RUN_BTN_HEIGHT = 30;
 	
 	// MapPanel
-	public final static Font MP_CHANGE_FONT = new Font("1ÈÆ±×¸²µ¿È­ R", Font.PLAIN, 15);
-	public final static Font MP_TEXT_FONT = new Font("1ÈÆ±×¸²µ¿È­ R", Font.PLAIN, 10);
+	public final static String MP_WARN_MSG = "µ¥ÀÌÅÍ ºÎÁ· ¤Ð¤Ð";
+	public final static int MP_WARN_X = 70;
+	public final static int MP_WARN_Y = 120;
+	public final static int MP_WARN_WIDTH = 200;
+	public final static int MP_WARN_HEIGHT = 40;
+	public final static Font MP_WARN_FONT = new Font("1ÈÆ±×¸²µ¿È­ R", Font.BOLD, 25);
+	
+	public final static Font MP_CHANGE_FONT = new Font("¸¼Àº °íµñ", Font.PLAIN, 13);
+	public final static Font MP_TEXT_FONT = new Font("¸¼Àº °íµñ", Font.PLAIN, 9);
 	
 	public enum EMapExplainState {on, off;}
 	public enum EMapChangeState {on, off;}
@@ -77,7 +84,7 @@ public class TPConstant {
 	public final static int MP_WIDTH = 276;
 	public final static int MP_HEIGHT = 326;
 	
-	public final static Image MAP_IMG = Toolkit.getDefaultToolkit().getImage("rsc/map.png");
+	public final static Image MAP_IMG = Toolkit.getDefaultToolkit().getImage("rsc/map2.jpg");
 	
 	public final static ImageIcon ICON_EATING = new ImageIcon("rsc/icon_eating.png");
 	public final static ImageIcon ICON_SLEEPING = new ImageIcon("rsc/icon_sleeping.png");
@@ -143,17 +150,6 @@ public class TPConstant {
 			this.y = y;
 		}
 	}
-	
-	// MapPanel - line
-	public final static int ML1_X1 = 40;
-	public final static int ML1_Y1 = 60;
-	public final static int ML1_X2 = 250;
-	public final static int ML1_Y2 = 180;
-	
-	public final static int ML2_X1 = 245;
-	public final static int ML2_Y1 = 170;
-	public final static int ML2_X2 = 50;
-	public final static int ML2_Y2 = 290;
 	
 	// Calculator
 	public final static int COURSE_NUM = 5;
