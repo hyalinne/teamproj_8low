@@ -12,6 +12,7 @@ import javax.swing.JDialog;
 import javax.swing.JPanel;
 
 import data.TPData;
+import java.awt.Color;
 
 public class TPCoursePanel extends JPanel {
 	private static final long serialVersionUID = 1L;
@@ -31,6 +32,7 @@ public class TPCoursePanel extends JPanel {
 	private TPData lastArea;
 
 	public TPCoursePanel() {
+		setBackground(new Color(255, 255, 255));
 		this.currentState = EState.idle;
 		this.setLayout(null);
 		this.setSize(700, 500);
@@ -47,6 +49,7 @@ public class TPCoursePanel extends JPanel {
 	private void makeButton() {
 		this.addBtn = new JButton("+");
 		this.addBtn.setBounds(600, 20, 50, 30);
+		this.addBtn.setBackground(new Color(242,242,242));
 		this.addBtn.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -60,38 +63,44 @@ public class TPCoursePanel extends JPanel {
 		this.removeBtn = new JButton("-");
 		this.removeBtn.setBounds(600, 60, 50, 30);
 		this.removeBtn.addMouseListener(mouseListener);
+		this.removeBtn.setBackground(new Color(242,242,242));
 		this.add(removeBtn);
 		
 		this.changeBtn = new JButton("C");
 		this.changeBtn.setBounds(600, 100, 50, 30);
 		this.changeBtn.addMouseListener(mouseListener);
+		this.changeBtn.setBackground(new Color(242,242,242));
 		this.add(changeBtn);
 		
 		this.undoBtn = new JButton("Undo");
 		this.undoBtn.setBounds(590, 200, 70, 30);
 		this.undoBtn.addMouseListener(mouseListener);
+		this.undoBtn.setBackground(new Color(242,242,242));
 		this.add(undoBtn);
 		
 		this.redoBtn = new JButton("Redo");
 		this.redoBtn.setBounds(590, 240, 70, 30);
 		this.redoBtn.addMouseListener(mouseListener);
+		this.redoBtn.setBackground(new Color(242,242,242));
 		this.add(redoBtn);
 		
 		this.saveBtn = new JButton("Save");
 		this.saveBtn.setBounds(590, 340, 70, 30);
 		this.saveBtn.addMouseListener(mouseListener);
+		this.saveBtn.setBackground(new Color(242,242,242));
 		this.add(saveBtn);
 		
 		this.loadBtn = new JButton("Load");
 		this.loadBtn.setBounds(590, 380, 70, 30);
 		this.loadBtn.addMouseListener(mouseListener);
+		this.loadBtn.setBackground(new Color(242,242,242));
 		this.add(loadBtn);
 	}
 	
 	private TPData addData() {
 		TPData tempData = null;
 		JDialog temp = new JDialog();
-		temp.setLayout(null);
+		temp.getContentPane().setLayout(null);
 		temp.setTitle("¿©ÇàÁöÃß°¡");
 		temp.setBounds(500, 20, 250,300);
 		temp.setVisible(true);
@@ -99,7 +108,7 @@ public class TPCoursePanel extends JPanel {
 		String[] tempString = {"¸ÀÁý", "°ü±¤", "ÈÞ½Ä"};
 		JComboBox<String> tempBox = new JComboBox<String>(tempString);
 		tempBox.setBounds(80, 30, 70, 30);
-		temp.add(tempBox);
+		temp.getContentPane().add(tempBox);
 		
 		tempData = new TPData("6", 1, 20, 22);
 				

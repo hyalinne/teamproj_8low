@@ -2,6 +2,8 @@ package panels;
 
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
+import java.awt.Color;
+import java.awt.Font;
 
 public class TPMainPanel extends JPanel {
 	private static final long serialVersionUID = 1L;
@@ -16,6 +18,8 @@ public class TPMainPanel extends JPanel {
 	public TPMainPanel() {
 		this.setLayout(null);
 		this.tabPane = new JTabbedPane();
+		tabPane.setFont(new Font("«‘√ ∑“πŸ≈¡", Font.PLAIN, 12));
+		tabPane.setBackground(Color.WHITE);
 		this.add(tabPane);
 		this.tabPane.setBounds(0, 50, 700, 500);
 		
