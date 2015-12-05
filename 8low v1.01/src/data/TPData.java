@@ -1,11 +1,12 @@
 package data;
 
 import java.awt.Graphics;
+import java.io.Serializable;
 
-public class TPData {
+public class TPData implements Cloneable, Serializable {
+	private static final long serialVersionUID = 1L;
+	
 	private String name;	
-	private TPData left;
-	private TPData right;
 	private int day;
 	private int startTime;
 	private int endTime;
@@ -14,8 +15,6 @@ public class TPData {
 	
 	public TPData() {
 		this.name = null;
-		this.left = null;
-		this.right = null;
 		this.day = 0;
 		this.startTime = 0;
 		this.endTime = 0;
@@ -28,8 +27,6 @@ public class TPData {
 	
 	public TPData(String name, int day, int sTime, int eTime) {
 		this.name = name;
-		this.left = null;
-		this.right = null;
 		this.day = day;
 		this.startTime = sTime;
 		this.endTime = eTime;
@@ -42,10 +39,6 @@ public class TPData {
 
 	public String getName() {return name;}
 	public void setName(String name) {this.name = name;}
-	public TPData getLeft() {return left;}
-	public void setLeft(TPData left) {this.left = left;}
-	public TPData getRight() {return right;}
-	public void setRight(TPData right) {this.right = right;}
 	public int getDay() {return day;}
 	public void setDay(int day) {this.day = day;}
 	public int getStartTime() {return startTime;}

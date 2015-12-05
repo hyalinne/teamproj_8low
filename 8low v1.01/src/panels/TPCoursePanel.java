@@ -5,18 +5,26 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-
+import java.io.IOException;
+import java.util.ArrayList;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
+import javax.swing.JFileChooser;
 import javax.swing.JPanel;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 import data.TPData;
+import data.TPFileManager;
+import frame.TPRedoStack;
+import frame.TPUndoStack;
 
 public class TPCoursePanel extends JPanel {
 	private static final long serialVersionUID = 1L;
 	private enum EState {idle, remove, change1, change2};
 	private EState currentState;
+	private String currenetPath;
+	private String currentFileName;
 	
 	private MouseListener mouseListener;
 	private JButton addBtn;
@@ -26,32 +34,24 @@ public class TPCoursePanel extends JPanel {
 	private JButton redoBtn;
 	private JButton saveBtn;
 	private JButton loadBtn;
-	
 	private JDialog addDialog;
 	
-	private TPData firstArea;
-	private TPData lastArea;
+	private TPUndoStack undoStack;
+	private TPRedoStack redoStack;
+	
+	private ArrayList<TPData> courseList;
 
 	public TPCoursePanel() {
 		this.currentState = EState.idle;
+
+		this.currenetPath = "./workspace";
+		this.currentFileName = null;
+		
 		this.setLayout(null);
 		this.setSize(700, 500);
 		this.mouseListener = new MouseHandler();
 		this.addMouseListener(mouseListener);
 		
-		this.addDialog = new JDialog();
-		this.addDialog.setLayout(null);
-		this.addDialog.setTitle("여행지추가");
-		this.addDialog.setBounds(500, 20, 250,300);
-	}
-	
-	public void init() {
-		this.makeButton();
-		this.makeCourses();
-		repaint();
-	}
-	
-	private void makeButton() {
 		this.addBtn = new JButton("+");
 		this.addBtn.setBounds(600, 20, 50, 30);
 		this.addBtn.addActionListener(new ActionListener() {
@@ -93,6 +93,29 @@ public class TPCoursePanel extends JPanel {
 		this.loadBtn.setBounds(590, 380, 70, 30);
 		this.loadBtn.addMouseListener(mouseListener);
 		this.add(loadBtn);
+		
+		this.addDialog = new JDialog();
+		this.addDialog.setLayout(null);
+		this.addDialog.setTitle("여행지추가");
+		this.addDialog.setBounds(500, 20, 250,300);
+		
+		this.undoStack = new TPUndoStack();
+		this.redoStack = new TPRedoStack();
+		
+		this.courseList = new ArrayList<TPData>();
+	}
+	
+	public void init() {
+		this.makeCourses();
+		repaint();
+	}
+	
+	public void makeCourses() {
+		this.courseList.add(new TPData("1", 1, 10, 12));
+		this.courseList.add(new TPData("2", 1, 12, 13));
+		this.courseList.add(new TPData("3", 1, 13, 15));
+		this.courseList.add(new TPData("4", 1, 15, 18));
+		this.courseList.add(new TPData("5", 1, 18, 20));
 	}
 	
 	private TPData addData() {
@@ -119,7 +142,7 @@ public class TPCoursePanel extends JPanel {
 		this.addDialog.add(tempBox);
 		
 		selectData = new TPData("6", 1, 20, 22);
-				
+		
 		return selectData;
 	}
 	
@@ -133,92 +156,138 @@ public class TPCoursePanel extends JPanel {
 		}
 	}
 	
+	// course change
+	
 	private void addArea(TPData newData) {
+		this.undoStack.push(courseList);
 		if(newData != null) {
-			lastArea.setRight(newData);
-			newData.setLeft(lastArea);
-			newData.setRight(null);
-			lastArea = newData;
+			this.courseList.add(newData);
 		}
 	}
 	
 	private void removeArea(TPData removeData) {
-		if(removeData.getLeft() == null && removeData.getRight() == null) {
-			firstArea = lastArea = null;
-		} else if(removeData.getLeft() == null) {
-			removeData.getRight().setLeft(null);
-			firstArea = removeData.getRight();
-		} else if(removeData.getRight() == null) {
-			removeData.getLeft().setRight(null);
-			lastArea = removeData.getLeft();
-		} else {
-			removeData.getRight().setLeft(removeData.getLeft());
-			removeData.getLeft().setRight(removeData.getRight());
-		}
-	}
-	
-	private void changeArea(TPData changeData1, TPData changeData2) {
-		
-		if(changeData1 == changeData2) {
-			return;
-		}
-		
-		TPData left1 = changeData1.getLeft();
-		TPData right1 = changeData1.getRight();
-		TPData left2 = changeData2.getLeft();
-		TPData right2 = changeData2.getRight();
-		
-		if(left1 != null) {
-			left1.setRight(changeData2);
-			changeData2.setLeft(left1);
-		} else {
-			changeData2.setLeft(null);
-			firstArea = changeData2;
-		}
-		if(right1 != null) {
-			right1.setLeft(changeData2);
-			changeData2.setRight(right1);
-		} else {
-			changeData2.setRight(null);
-			lastArea = changeData2;
-		}
-		if(left2 != null) {
-			left2.setRight(changeData1);
-			changeData1.setLeft(left2);
-		} else {
-			changeData1.setLeft(null);
-			firstArea = changeData1;
-		}
-		if(right2 != null) {
-			right2.setLeft(changeData1);
-			changeData1.setRight(right2);
-		} else {
-			changeData1.setRight(null);
-			lastArea = changeData1;
+		this.undoStack.push(courseList);
+		if(removeData != null) {
+			this.courseList.remove(removeData);
 		}
 		
 		repaint();
 	}
 	
+	private void changeArea(TPData changeData1, TPData changeData2) {
+		if(changeData1 == changeData2) {
+			return;
+		}
+		
+		this.undoStack.push(courseList);
+		
+		ArrayList<TPData> newList = new ArrayList<TPData>();
+		int index1, index2;
+		for(index1 = 0; index1 < this.courseList.size(); index1++) {
+			if(this.courseList.get(index1).equals(changeData1)) {
+				break;
+			}
+		}
+		for(index2 = 0; index2 < this.courseList.size(); index2++) {
+			if(this.courseList.get(index2).equals(changeData2)) {
+				break;
+			}
+		}
+		for(int i = 0; i < this.courseList.size(); i++) {
+			if(i == index1) {
+				newList.add(changeData2);
+			} else if(i == index2) {
+				newList.add(changeData1);
+			} else {
+				newList.add(this.courseList.get(i));
+			}
+		}
+		this.courseList = newList;
+		
+		repaint();
+	}
+	
+	// undo & redo
+	
+	private void undo() {
+		this.redoStack.push(this.courseList);
+		ArrayList<TPData> temp = this.undoStack.pop();
+		if(temp != null) {
+			this.courseList = temp;
+		}
+		repaint();
+	}
+	
+	private void redo() {
+		this.undoStack.push(this.courseList);
+		ArrayList<TPData> temp = this.redoStack.pop();
+		if(temp != null) {
+			this.courseList = temp;
+		}
+		this.repaint();
+	}
+	
+	// save & load
+	
+	enum EDialogType { OPEN, SAVE, NONE };
+	private int showDialog(EDialogType eDialogType) {
+	    JFileChooser chooser = new JFileChooser(this.currenetPath);
+	    FileNameExtensionFilter filter = 
+	    		new FileNameExtensionFilter("Travle Planner Course", "tpc");
+	    chooser.setFileFilter(filter);
+	    int returnVal = JFileChooser.ERROR_OPTION;
+	    
+	    if (eDialogType == EDialogType.OPEN) {
+	    	returnVal = chooser.showOpenDialog(null);
+	    } else if (eDialogType == EDialogType.SAVE) {
+	    	returnVal = chooser.showSaveDialog(null);	    	
+	    } 
+	    
+	    if(returnVal == JFileChooser.APPROVE_OPTION) {
+	    	this.currenetPath = chooser.getSelectedFile().getParent();
+	    	this.currentFileName = currenetPath + "\\" + chooser.getSelectedFile().getName();
+	    }
+	    return returnVal;
+	}
+	
+	private void save() {
+		int returnVal = this.showDialog(EDialogType.SAVE);
+	    if( returnVal == JFileChooser.APPROVE_OPTION) {
+	    	if (!this.currentFileName.endsWith("." + "tpc")) {
+	    		this.currentFileName = this.currentFileName + "." + "tpc";
+	    	}
+			try {
+				TPFileManager.write(currentFileName, this.courseList);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			this.repaint();
+	    }
+	}
+	
+	@SuppressWarnings("unchecked")
+	private void load() {
+		int returnVal = this.showDialog(EDialogType.OPEN);
+	    if( returnVal == JFileChooser.APPROVE_OPTION) {
+			try {
+				this.courseList = (ArrayList<TPData>) TPFileManager.read(currentFileName);
+			} catch (ClassNotFoundException | IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+	    }
+	}
+	
 	@Override
 	public void paint(Graphics g) {
 		super.paint(g);
-		TPData temp;
 		int x = 10, y = 100, width = 50, height = 30;
-		for(temp = firstArea; temp != null; temp = temp.getRight()) {
-			temp.setBounds(x, y, width, height);
-			temp.draw(getGraphics());
+		for(int i = 0; i < this.courseList.size(); i++) {
+			this.courseList.get(i).setBounds(x, y, width, height);
+			this.courseList.get(i).draw(getGraphics());
 			x += 70;
 		}
-	}
-	
-	public void makeCourses() {
-		firstArea = new TPData("1", 1, 10, 12);
-		lastArea = firstArea;
-		this.addArea(new TPData("2", 1, 12, 13));
-		this.addArea(new TPData("3", 1, 13, 15));
-		this.addArea(new TPData("4", 1, 15, 18));
-		this.addArea(new TPData("5", 1, 18, 20));
 	}
 	
 	private class MouseHandler implements MouseListener {
@@ -232,11 +301,19 @@ public class TPCoursePanel extends JPanel {
 				currentState = EState.remove;
 			} else if(e.getSource().equals(changeBtn)) {
 				currentState = EState.change1;
+			} else if(e.getSource().equals(undoBtn)) {
+				undo();
+			} else if(e.getSource().equals(redoBtn)) {
+				redo();
+			} else if(e.getSource().equals(saveBtn)) {
+				save();
+			} else if(e.getSource().equals(loadBtn)) {
+				load();
 			} else if(currentState == EState.remove) {
-				TPData temp;
-				for(temp = firstArea; temp != null; temp = temp.getRight()) {
-					if(temp.contain(e.getX(), e.getY())) {
-						removeArea(temp);
+				for(int i = 0; i < courseList.size(); i++) {
+					if(courseList.get(i).contain(e.getX(), e.getY())) {
+						removeArea(courseList.get(i));
+						break;
 					}
 				}
 			}
@@ -252,12 +329,11 @@ public class TPCoursePanel extends JPanel {
 		public void mousePressed(MouseEvent e) {
 			// TODO Auto-generated method stub
 			if(currentState == EState.change1) {
-				TPData temp;
-				for(temp = firstArea; temp != null; temp = temp.getRight()) {
-					if(temp.contain(e.getX(), e.getY())) {
-						change1 = temp;
-						System.out.println(change1.getStartTime());
+				for(int i = 0; i < courseList.size(); i++) {
+					if(courseList.get(i).contain(e.getX(), e.getY())) {
+						change1 = courseList.get(i);
 						currentState = EState.change2;
+						break;
 					}
 				}
 			}
@@ -267,13 +343,12 @@ public class TPCoursePanel extends JPanel {
 		public void mouseReleased(MouseEvent e) {
 			// TODO Auto-generated method stub
 			if(currentState == EState.change2) {
-				TPData temp;
-				for(temp = firstArea; temp != null; temp = temp.getRight()) {
-					if(temp.contain(e.getX(), e.getY())) {
-						System.out.println(temp.getStartTime());
-						changeArea(change1, temp);
+				for(int i = 0; i < courseList.size(); i++) {
+					if(courseList.get(i).contain(e.getX(), e.getY())) {
+						changeArea(change1, courseList.get(i));
 						change1 = null;
 						currentState = EState.idle;
+						break;
 					}
 				}
 			}
