@@ -27,6 +27,8 @@ public class TPCoursePanel extends JPanel {
 	private JButton saveBtn;
 	private JButton loadBtn;
 	
+	private JDialog addDialog;
+	
 	private TPData firstArea;
 	private TPData lastArea;
 
@@ -36,6 +38,11 @@ public class TPCoursePanel extends JPanel {
 		this.setSize(700, 500);
 		this.mouseListener = new MouseHandler();
 		this.addMouseListener(mouseListener);
+		
+		this.addDialog = new JDialog();
+		this.addDialog.setLayout(null);
+		this.addDialog.setTitle("¿©ÇàÁöÃß°¡");
+		this.addDialog.setBounds(500, 20, 250,300);
 	}
 	
 	public void init() {
@@ -89,21 +96,41 @@ public class TPCoursePanel extends JPanel {
 	}
 	
 	private TPData addData() {
-		TPData tempData = null;
-		JDialog temp = new JDialog();
-		temp.setLayout(null);
-		temp.setTitle("¿©ÇàÁöÃß°¡");
-		temp.setBounds(500, 20, 250,300);
-		temp.setVisible(true);
+		this.addDialog.setVisible(true);
 		
+		TPData selectData = null;
 		String[] tempString = {"¸ÀÁý", "°ü±¤", "ÈÞ½Ä"};
 		JComboBox<String> tempBox = new JComboBox<String>(tempString);
 		tempBox.setBounds(80, 30, 70, 30);
-		temp.add(tempBox);
+		tempBox.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				if(tempBox.getSelectedItem().equals("¸ÀÁý")) {
+					addList("¸ÀÁý");
+				} else if(tempBox.getSelectedItem().equals("°ü±¤")) {
+					addList("°ü±¤");
+				} else if(tempBox.getSelectedItem().equals("ÈÞ½Ä")) {
+					addList("ÈÞ½Ä");
+				}
+			}
+		});
+		this.addDialog.add(tempBox);
 		
-		tempData = new TPData("6", 1, 20, 22);
+		selectData = new TPData("6", 1, 20, 22);
 				
-		return tempData;
+		return selectData;
+	}
+	
+	private void addList(String theme) {
+		if(theme == "¸ÀÁý") {
+			
+		} else if(theme == "°ü±¤") {
+			
+		} else if(theme == "ÈÞ½Ä") {
+			
+		}
 	}
 	
 	private void addArea(TPData newData) {
@@ -128,11 +155,13 @@ public class TPCoursePanel extends JPanel {
 			removeData.getRight().setLeft(removeData.getLeft());
 			removeData.getLeft().setRight(removeData.getRight());
 		}
-		
-		repaint();
 	}
 	
 	private void changeArea(TPData changeData1, TPData changeData2) {
+		
+		if(changeData1 == changeData2) {
+			return;
+		}
 		
 		TPData left1 = changeData1.getLeft();
 		TPData right1 = changeData1.getRight();
@@ -171,30 +200,14 @@ public class TPCoursePanel extends JPanel {
 		repaint();
 	}
 	
-	public void showCourses() {
-		TPData temp;
-		int x = 10, y = 100, width = 50, height = 30;
-		for(temp = firstArea; temp != null; temp = temp.getRight()) {
-			temp.setBounds(x, y, width, height);
-			temp.drawCourse(getGraphics());
-			x += 70;
-		}
-	}
-	
 	@Override
 	public void paint(Graphics g) {
 		super.paint(g);
-		showCourses();
-	}
-	
-	@Override
-	public void paintAll(Graphics g) {
-		super.paint(g);
 		TPData temp;
 		int x = 10, y = 100, width = 50, height = 30;
 		for(temp = firstArea; temp != null; temp = temp.getRight()) {
 			temp.setBounds(x, y, width, height);
-			temp.drawCourse(getGraphics());
+			temp.draw(getGraphics());
 			x += 70;
 		}
 	}

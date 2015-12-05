@@ -65,7 +65,7 @@ public class TPData {
 		this.height = h;
 	}
 	
-	public void drawCourse(Graphics g) {
+	public void draw(Graphics g) {
 		g.drawRect(this.x, this.y, this.width, this.height);
 		g.drawString(this.name, this.x + 2, this.y + 5);
 	}
