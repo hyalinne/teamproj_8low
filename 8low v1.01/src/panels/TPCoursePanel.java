@@ -1,5 +1,6 @@
 package panels;
 
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -7,6 +8,8 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.IOException;
 import java.util.ArrayList;
+
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
@@ -14,6 +17,7 @@ import javax.swing.JFileChooser;
 import javax.swing.JPanel;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
+import constants.TPConstants;
 import data.TPData;
 import data.TPFileManager;
 import frame.TPRedoStack;
@@ -48,49 +52,58 @@ public class TPCoursePanel extends JPanel {
 		this.currentFileName = null;
 		
 		this.setLayout(null);
-		this.setSize(700, 500);
+		this.setBackground(Color.WHITE);
+		this.setLocation(0,TPConstants.MAIN_BUTTON_HEIGHT);
+		this.setSize(TPConstants.PANEL_WIDTH, TPConstants.PANEL_HEIGHT);
 		this.mouseListener = new MouseHandler();
 		this.addMouseListener(mouseListener);
 		
-		this.addBtn = new JButton("+");
-		this.addBtn.setBounds(600, 20, 50, 30);
+		this.addBtn = new JButton();
+		this.addBtn.setIcon(new ImageIcon("rsc/+.png"));
+		this.addBtn.setBounds(TPConstants.COURSE_BUTTON_X, TPConstants.C_BUTTON_Y, TPConstants.COURSE_BUTTON_WIDTH, TPConstants.C_BUTTON_HEIGHT);
 		this.addBtn.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
 				addArea(addData());
-				repaint();
 			}
 		});
 		this.add(addBtn);
 		
 		this.removeBtn = new JButton("-");
-		this.removeBtn.setBounds(600, 60, 50, 30);
+		this.removeBtn.setBounds(TPConstants.COURSE_BUTTON_X, TPConstants.C_BUTTON_Y + (TPConstants.C_BUTTON_HEIGHT + TPConstants.C_BUTTON_SPACE) * 1
+				, TPConstants.COURSE_BUTTON_WIDTH, TPConstants.C_BUTTON_HEIGHT);
 		this.removeBtn.addMouseListener(mouseListener);
 		this.add(removeBtn);
 		
-		this.changeBtn = new JButton("C");
-		this.changeBtn.setBounds(600, 100, 50, 30);
+		this.changeBtn = new JButton();
+		this.changeBtn.setIcon(new ImageIcon("rsc/changebutton.png"));
+		this.changeBtn.setBounds(TPConstants.COURSE_BUTTON_X, TPConstants.C_BUTTON_Y + (TPConstants.C_BUTTON_HEIGHT + TPConstants.C_BUTTON_SPACE) * 2
+				, TPConstants.COURSE_BUTTON_WIDTH, TPConstants.C_BUTTON_HEIGHT);
 		this.changeBtn.addMouseListener(mouseListener);
 		this.add(changeBtn);
 		
 		this.undoBtn = new JButton("Undo");
-		this.undoBtn.setBounds(590, 200, 70, 30);
+		this.undoBtn.setBounds(TPConstants.DO_BUTTON_X, TPConstants.C_BUTTON_Y + (TPConstants.C_BUTTON_HEIGHT + TPConstants.C_BUTTON_SPACE) * 2 + TPConstants.C_BUTTON_WIDE_SPACE * 1
+				, TPConstants.DO_BUTTON_WIDTH, TPConstants.C_BUTTON_HEIGHT);
 		this.undoBtn.addMouseListener(mouseListener);
 		this.add(undoBtn);
 		
 		this.redoBtn = new JButton("Redo");
-		this.redoBtn.setBounds(590, 240, 70, 30);
+		this.redoBtn.setBounds(TPConstants.DO_BUTTON_X, TPConstants.C_BUTTON_Y + (TPConstants.C_BUTTON_HEIGHT + TPConstants.C_BUTTON_SPACE) * 3 + TPConstants.C_BUTTON_WIDE_SPACE * 1
+				, TPConstants.DO_BUTTON_WIDTH, TPConstants.C_BUTTON_HEIGHT);
 		this.redoBtn.addMouseListener(mouseListener);
 		this.add(redoBtn);
 		
 		this.saveBtn = new JButton("Save");
-		this.saveBtn.setBounds(590, 340, 70, 30);
+		this.saveBtn.setBounds(TPConstants.DO_BUTTON_X, TPConstants.C_BUTTON_Y + (TPConstants.C_BUTTON_HEIGHT + TPConstants.C_BUTTON_SPACE) * 3 + TPConstants.C_BUTTON_WIDE_SPACE * 2
+				, TPConstants.DO_BUTTON_WIDTH, TPConstants.C_BUTTON_HEIGHT);
 		this.saveBtn.addMouseListener(mouseListener);
 		this.add(saveBtn);
 		
 		this.loadBtn = new JButton("Load");
-		this.loadBtn.setBounds(590, 380, 70, 30);
+		this.loadBtn.setBounds(TPConstants.DO_BUTTON_X, TPConstants.C_BUTTON_Y + (TPConstants.C_BUTTON_HEIGHT + TPConstants.C_BUTTON_SPACE) * 4 + TPConstants.C_BUTTON_WIDE_SPACE * 2
+				, TPConstants.DO_BUTTON_WIDTH, TPConstants.C_BUTTON_HEIGHT);
 		this.loadBtn.addMouseListener(mouseListener);
 		this.add(loadBtn);
 		
@@ -107,7 +120,6 @@ public class TPCoursePanel extends JPanel {
 	
 	public void init() {
 		this.makeCourses();
-		repaint();
 	}
 	
 	public void makeCourses() {
@@ -163,6 +175,7 @@ public class TPCoursePanel extends JPanel {
 		if(newData != null) {
 			this.courseList.add(newData);
 		}
+		repaint();
 	}
 	
 	private void removeArea(TPData removeData) {
@@ -283,9 +296,9 @@ public class TPCoursePanel extends JPanel {
 	public void paint(Graphics g) {
 		super.paint(g);
 		int x = 10, y = 100, width = 50, height = 30;
-		for(int i = 0; i < this.courseList.size(); i++) {
-			this.courseList.get(i).setBounds(x, y, width, height);
-			this.courseList.get(i).draw(getGraphics());
+		for(TPData course : this.courseList) {
+			course.setBounds(x, y, width, height);
+			course.draw(getGraphics());
 			x += 70;
 		}
 	}

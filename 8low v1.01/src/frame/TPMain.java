@@ -6,7 +6,6 @@ public class TPMain {
 		// TODO Auto-generated method stub
 		TPFrame frame = new TPFrame("8low");
 		frame.init();
-		frame.setVisible(true);
 	}
 
 }
