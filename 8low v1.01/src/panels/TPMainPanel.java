@@ -1,7 +1,6 @@
-package frame;
+package panels;
 
 import java.awt.Color;
-import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -11,10 +10,6 @@ import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 
 import constants.TPConstants;
-import panels.TPCoursePanel;
-import panels.TPHomePanel;
-import panels.TPRecommendPanel;
-import panels.TPTimePanel;
 
 public class TPMainPanel extends JPanel{
 	private static final long serialVersionUID = 1L;
@@ -41,21 +36,22 @@ public class TPMainPanel extends JPanel{
 		this.actionHandler = new ActionHandler();
 		
 		this.homePanel = new TPHomePanel();
-		this.homePanel.init();
 		this.add(homePanel);
 		
 		this.coursePanel = new TPCoursePanel();
-		this.coursePanel.init();
 		this.add(coursePanel);
 		
 		this.timePanel = new TPTimePanel();
-		this.timePanel.init();
 		this.add(timePanel);
 		
 		this.recommendPanel = new TPRecommendPanel();
-		this.recommendPanel.init();
 		this.add(recommendPanel);
 		
+
+		this.homePanel.init();
+		this.coursePanel.init(timePanel);
+		this.timePanel.init(coursePanel);
+		this.recommendPanel.init();
 	}
 	
 	public void init() {
@@ -98,21 +94,15 @@ public class TPMainPanel extends JPanel{
 		this.currentPanel.setVisible(true);
 	}
 	
-	@Override
-	public void paint(Graphics g) {
-		super.paint(g);
-		this.homePanel.setVisible(false);
-		this.coursePanel.setVisible(false);
-		this.timePanel.setVisible(false);
-		this.recommendPanel.setVisible(false);
-		this.currentPanel.setVisible(true);
-	}
-	
 	private class ActionHandler implements ActionListener {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			// TODO Auto-generated method stub
+			homePanel.setVisible(false);
+			coursePanel.setVisible(false);
+			timePanel.setVisible(false);
+			recommendPanel.setVisible(false);
 			if(e.getSource().equals(homeBtn)) {
 				currentPanel = homePanel;
 			} else if(e.getSource().equals(courseBtn)) {
@@ -122,7 +112,7 @@ public class TPMainPanel extends JPanel{
 			} else if(e.getSource().equals(recommendBtn)) {
 				currentPanel = recommendPanel;
 			}
-			repaint();
+			currentPanel.setVisible(true);
 		}
 		
 	}

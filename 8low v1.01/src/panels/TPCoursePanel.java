@@ -1,7 +1,8 @@
 package panels;
 
 import java.awt.Color;
-import java.awt.Graphics;
+import java.awt.Component;
+import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
@@ -18,6 +19,10 @@ import javax.swing.JPanel;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 import constants.TPConstants;
+import data.EEatingData;
+import data.ESeeingData;
+import data.ESleepingData;
+import data.TPButton;
 import data.TPData;
 import data.TPFileManager;
 import frame.TPRedoStack;
@@ -30,6 +35,10 @@ public class TPCoursePanel extends JPanel {
 	private String currenetPath;
 	private String currentFileName;
 	
+	private ArrayList<TPData> courseList;
+	private TPUndoStack undoStack;
+	private TPRedoStack redoStack;
+	
 	private MouseListener mouseListener;
 	private JButton addBtn;
 	private JButton removeBtn;
@@ -40,10 +49,9 @@ public class TPCoursePanel extends JPanel {
 	private JButton loadBtn;
 	private JDialog addDialog;
 	
-	private TPUndoStack undoStack;
-	private TPRedoStack redoStack;
+	private TPData selectData;
 	
-	private ArrayList<TPData> courseList;
+	private TPTimePanel timePanel;
 
 	public TPCoursePanel() {
 		this.currentState = EState.idle;
@@ -58,6 +66,30 @@ public class TPCoursePanel extends JPanel {
 		this.mouseListener = new MouseHandler();
 		this.addMouseListener(mouseListener);
 		
+		this.addDialog = new JDialog();
+		this.addDialog.setLayout(null);
+		this.addDialog.setTitle("¿©ÇàÁöÃß°¡");
+		this.addDialog.setBounds(500, 20, 230, 300);
+		
+		this.undoStack = new TPUndoStack();
+		this.redoStack = new TPRedoStack();
+		
+		this.courseList = new ArrayList<TPData>();
+		this.selectData = null;
+	}
+	
+	public void init(TPTimePanel timePanel) {
+		this.drawCourses();
+		this.timePanel = timePanel;
+	}
+	
+	public ArrayList<TPData> getCourse() {return this.courseList;}
+	
+	public void updataTimePanel() {
+		timePanel.setData(courseList);
+	}
+	
+	private void makeButtons() {
 		this.addBtn = new JButton();
 		this.addBtn.setIcon(new ImageIcon("rsc/+.png"));
 		this.addBtn.setBounds(TPConstants.COURSE_BUTTON_X, TPConstants.C_BUTTON_Y, TPConstants.COURSE_BUTTON_WIDTH, TPConstants.C_BUTTON_HEIGHT);
@@ -65,7 +97,7 @@ public class TPCoursePanel extends JPanel {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				addArea(addData());
+				addData();
 			}
 		});
 		this.add(addBtn);
@@ -106,35 +138,37 @@ public class TPCoursePanel extends JPanel {
 				, TPConstants.DO_BUTTON_WIDTH, TPConstants.C_BUTTON_HEIGHT);
 		this.loadBtn.addMouseListener(mouseListener);
 		this.add(loadBtn);
-		
-		this.addDialog = new JDialog();
-		this.addDialog.setLayout(null);
-		this.addDialog.setTitle("¿©ÇàÁöÃß°¡");
-		this.addDialog.setBounds(500, 20, 250,300);
-		
-		this.undoStack = new TPUndoStack();
-		this.redoStack = new TPRedoStack();
-		
-		this.courseList = new ArrayList<TPData>();
 	}
 	
-	public void init() {
-		this.makeCourses();
+	private void drawCourses() {
+		this.removeAll();
+		this.makeButtons();
+		int x = 20, y = 100, width = 90, height = 120;
+		for(TPData course : this.courseList) {
+			TPButton temp = new TPButton();
+			temp.setData(course);
+			temp.setBounds(x, y, width, height);
+			temp.setIcon(course.getIcon());
+			temp.setBackground(Color.WHITE);
+			temp.setOpaque(false);
+			temp.setBorderPainted(false);
+			temp.setFocusPainted(false);
+			temp.addMouseListener(mouseListener);
+			temp.setLabel(course.getName());
+			this.add(temp);
+			x += 120;
+			if(x == 620) {
+				y = 240;
+				x = 10;
+			}
+			
+		}
 	}
 	
-	public void makeCourses() {
-		this.courseList.add(new TPData("1", 1, 10, 12));
-		this.courseList.add(new TPData("2", 1, 12, 13));
-		this.courseList.add(new TPData("3", 1, 13, 15));
-		this.courseList.add(new TPData("4", 1, 15, 18));
-		this.courseList.add(new TPData("5", 1, 18, 20));
-	}
-	
-	private TPData addData() {
+	private void addData() {
 		this.addDialog.setVisible(true);
 		
-		TPData selectData = null;
-		String[] tempString = {"¸ÀÁý", "°ü±¤", "ÈÞ½Ä"};
+		String[] tempString = {"¼±ÅÃ", "¸ÀÁý", "°ü±¤", "ÈÞ½Ä"};
 		JComboBox<String> tempBox = new JComboBox<String>(tempString);
 		tempBox.setBounds(80, 30, 70, 30);
 		tempBox.addActionListener(new ActionListener() {
@@ -148,24 +182,111 @@ public class TPCoursePanel extends JPanel {
 					addList("°ü±¤");
 				} else if(tempBox.getSelectedItem().equals("ÈÞ½Ä")) {
 					addList("ÈÞ½Ä");
+				} else {
+					addDialog.removeAll();
+					addDialog.repaint();
 				}
 			}
 		});
 		this.addDialog.add(tempBox);
 		
-		selectData = new TPData("6", 1, 20, 22);
+		JButton submitButton = new JButton("È®ÀÎ");
+		submitButton.setBounds(80, 220, 70, 30);
+		submitButton.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				if(selectData != null) {
+					addArea(selectData);
+					drawCourses();
+					repaint();
+				}
+				addDialog.setVisible(false);
+			}
+		});
+		this.addDialog.add(submitButton);
+	}
+	
+	private void removeList() {
+		for(Component temp : this.addDialog.getRootPane().getContentPane().getComponents()) {
+			if(temp.getClass().getSimpleName().equals("TPButton")) {
+				this.addDialog.remove(temp);
+			}
+		}
+		this.addDialog.repaint();
+	}
+	
+	private enum EDialogBounds {
+		first(30, 70, 70, 30),
+		secon(30, 120, 70, 30),
+		third(30, 170, 70, 30),
+		forth(110, 70, 70, 30),
+		fifth(110, 120, 70, 30),
+		sixth(110, 170, 70, 30);
 		
-		return selectData;
+		private int x, y, width, height;
+		private EDialogBounds(int x, int y, int w, int h) {
+			this.x = x;
+			this.y = y;
+			this.width = w;
+			this.height = h;
+		}
+		public Rectangle getBounds() {return new Rectangle(x,y,width,height);}
 	}
 	
 	private void addList(String theme) {
+		removeList();
 		if(theme == "¸ÀÁý") {
-			
+			for(int i = 0; i < 6; i++) {
+				TPButton temp = new TPButton();
+				temp.setBounds(EDialogBounds.values()[i].getBounds());
+				temp.setData(EEatingData.values()[i].getData());
+				temp.setText(EEatingData.values()[i].getData().getName());
+				temp.addActionListener(new ActionListener() {
+					
+					@Override
+					public void actionPerformed(ActionEvent e) {
+						// TODO Auto-generated method stub
+						selectData = ((TPButton) e.getSource()).getData();
+					}
+				});
+				this.addDialog.add(temp);
+			}
 		} else if(theme == "°ü±¤") {
-			
+			for(int i = 0; i < 6; i++) {
+				TPButton temp = new TPButton();
+				temp.setBounds(EDialogBounds.values()[i].getBounds());
+				temp.setData(ESeeingData.values()[i].getData());
+				temp.setText(ESeeingData.values()[i].getData().getName());
+				temp.addActionListener(new ActionListener() {
+					
+					@Override
+					public void actionPerformed(ActionEvent e) {
+						// TODO Auto-generated method stub
+						selectData = ((TPButton) e.getSource()).getData();
+					}
+				});
+				this.addDialog.add(temp);
+			}
 		} else if(theme == "ÈÞ½Ä") {
-			
+			for(int i = 0; i < 6; i++) {
+				TPButton temp = new TPButton();
+				temp.setBounds(EDialogBounds.values()[i].getBounds());
+				temp.setData(ESleepingData.values()[i].getData());
+				temp.setText(ESleepingData.values()[i].getData().getName());
+				temp.addActionListener(new ActionListener() {
+					
+					@Override
+					public void actionPerformed(ActionEvent e) {
+						// TODO Auto-generated method stub
+						selectData = ((TPButton) e.getSource()).getData();
+					}
+				});
+				this.addDialog.add(temp);
+			}
 		}
+		this.addDialog.repaint();
 	}
 	
 	// course change
@@ -173,9 +294,11 @@ public class TPCoursePanel extends JPanel {
 	private void addArea(TPData newData) {
 		this.undoStack.push(courseList);
 		if(newData != null) {
-			this.courseList.add(newData);
+			if(courseList.size() < 10) {
+				this.courseList.add(newData);
+			}
 		}
-		repaint();
+		this.updataTimePanel();
 	}
 	
 	private void removeArea(TPData removeData) {
@@ -183,8 +306,7 @@ public class TPCoursePanel extends JPanel {
 		if(removeData != null) {
 			this.courseList.remove(removeData);
 		}
-		
-		repaint();
+		this.updataTimePanel();
 	}
 	
 	private void changeArea(TPData changeData1, TPData changeData2) {
@@ -216,8 +338,7 @@ public class TPCoursePanel extends JPanel {
 			}
 		}
 		this.courseList = newList;
-		
-		repaint();
+		this.updataTimePanel();
 	}
 	
 	// undo & redo
@@ -228,7 +349,9 @@ public class TPCoursePanel extends JPanel {
 		if(temp != null) {
 			this.courseList = temp;
 		}
-		repaint();
+		this.drawCourses();
+		this.repaint();
+		this.updataTimePanel();
 	}
 	
 	private void redo() {
@@ -237,7 +360,9 @@ public class TPCoursePanel extends JPanel {
 		if(temp != null) {
 			this.courseList = temp;
 		}
+		this.drawCourses();
 		this.repaint();
+		this.updataTimePanel();
 	}
 	
 	// save & load
@@ -275,7 +400,6 @@ public class TPCoursePanel extends JPanel {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			this.repaint();
 	    }
 	}
 	
@@ -290,17 +414,8 @@ public class TPCoursePanel extends JPanel {
 				e.printStackTrace();
 			}
 	    }
-	}
-	
-	@Override
-	public void paint(Graphics g) {
-		super.paint(g);
-		int x = 10, y = 100, width = 50, height = 30;
-		for(TPData course : this.courseList) {
-			course.setBounds(x, y, width, height);
-			course.draw(getGraphics());
-			x += 70;
-		}
+		this.drawCourses();
+		this.repaint();
 	}
 	
 	private class MouseHandler implements MouseListener {
@@ -323,11 +438,23 @@ public class TPCoursePanel extends JPanel {
 			} else if(e.getSource().equals(loadBtn)) {
 				load();
 			} else if(currentState == EState.remove) {
-				for(int i = 0; i < courseList.size(); i++) {
-					if(courseList.get(i).contain(e.getX(), e.getY())) {
-						removeArea(courseList.get(i));
-						break;
-					}
+				if(e.getSource().getClass().getSimpleName().equals("TPButton")) {
+					removeArea(((TPButton) e.getSource()).getData());
+					drawCourses();
+					repaint();
+				}
+			} else if(currentState == EState.change1) {
+				if(e.getSource().getClass().getSimpleName().equals("TPButton")) {
+					change1 = ((TPButton) e.getSource()).getData();
+					currentState = EState.change2;
+				}
+			} else if(currentState == EState.change2) {
+				if(e.getSource().getClass().getSimpleName().equals("TPButton")) {
+					changeArea(change1, ((TPButton) e.getSource()).getData());
+					drawCourses();
+					repaint();
+					change1 = null;
+					currentState = EState.idle;
 				}
 			}
 		}
@@ -341,30 +468,11 @@ public class TPCoursePanel extends JPanel {
 		@Override
 		public void mousePressed(MouseEvent e) {
 			// TODO Auto-generated method stub
-			if(currentState == EState.change1) {
-				for(int i = 0; i < courseList.size(); i++) {
-					if(courseList.get(i).contain(e.getX(), e.getY())) {
-						change1 = courseList.get(i);
-						currentState = EState.change2;
-						break;
-					}
-				}
-			}
 		}
 
 		@Override
 		public void mouseReleased(MouseEvent e) {
 			// TODO Auto-generated method stub
-			if(currentState == EState.change2) {
-				for(int i = 0; i < courseList.size(); i++) {
-					if(courseList.get(i).contain(e.getX(), e.getY())) {
-						changeArea(change1, courseList.get(i));
-						change1 = null;
-						currentState = EState.idle;
-						break;
-					}
-				}
-			}
 		}
 		
 	}

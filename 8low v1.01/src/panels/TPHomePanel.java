@@ -4,12 +4,15 @@ import java.awt.Color;
 import java.awt.Graphics;
 
 import javax.swing.ImageIcon;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import constants.TPConstants;
 
 public class TPHomePanel extends JPanel {
 	private static final long serialVersionUID = 1L;
+	
+	private JLabel preNameLabel;
 
 	public TPHomePanel() {
 		this.setLayout(null);
@@ -19,12 +22,14 @@ public class TPHomePanel extends JPanel {
 	}
 	
 	public void init() {
-		
+		this.preNameLabel = new JLabel("¿Ã∏ß : ");
+		this.preNameLabel.setBounds(25, 400, 80, 40);
+		this.add(preNameLabel);
 	}
 	
 	@Override
 	public void paint(Graphics g) {
-		ImageIcon image = new ImageIcon("rsc/HomePage.png");
+		ImageIcon image = new ImageIcon("rsc/HomeImage.jpg");
 		super.paint(g);
 		g.drawImage(image.getImage(), 0, 0, null);
 	}

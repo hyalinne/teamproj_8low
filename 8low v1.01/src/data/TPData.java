@@ -3,54 +3,66 @@ package data;
 import java.awt.Graphics;
 import java.io.Serializable;
 
+import javax.swing.ImageIcon;
+
 public class TPData implements Cloneable, Serializable {
 	private static final long serialVersionUID = 1L;
 	
-	private String name;	
-	private int day;
+	private String name;
+	private ImageIcon icon;
+	
+	private String address;
+	private String phoneNum;
+	private String content;
+	
 	private int startTime;
-	private int endTime;
-	private int duringTime;
 	private int x, y, width, height;
 	
 	public TPData() {
 		this.name = null;
-		this.day = 0;
+		this.address = null;
+		this.phoneNum = null;
+		this.content = null;
 		this.startTime = 0;
-		this.endTime = 0;
-		this.duringTime = 0;
 		this.x = 0;
 		this.y = 0;
 		this.width = 0;
 		this.height = 0;
 	}
 	
-	public TPData(String name, int day, int sTime, int eTime) {
+	public TPData(String name, String theme) {
 		this.name = name;
-		this.day = day;
-		this.startTime = sTime;
-		this.endTime = eTime;
-		this.duringTime = eTime - sTime;
+		this.address = null;
+		this.phoneNum = null;
+		this.content = null;
+		this.startTime = 0;
 		this.x = 0;
 		this.y = 0;
 		this.width = 0;
 		this.height = 0;
+		if(theme.equals("¸ÀÁý")) {
+			icon = new ImageIcon("rsc/eatingBtn.jpg");
+		} else if(theme.equals("°ü±¤")) {
+			icon = new ImageIcon("rsc/seeingBtn.jpg");
+		} else if(theme.equals("ÈÞ½Ä")) {
+			icon = new ImageIcon("rsc/sleepingBtn.jpg");
+		}
 	}
 
 	public String getName() {return name;}
 	public void setName(String name) {this.name = name;}
-	public int getDay() {return day;}
-	public void setDay(int day) {this.day = day;}
+	public ImageIcon getIcon() {return icon;}
+	public void setIcon(ImageIcon icon) {this.icon = icon;}
+
+	public String getAddress() {return address;}
+	public void setAddress(String address) {this.address = address;}
+	public String getPhoneNum() {return phoneNum;}
+	public void setPhoneNum(String phoneNum) {this.phoneNum = phoneNum;}
+	public String getContent() {return content;}
+	public void setContent(String content) {this.content = content;}
+	
 	public int getStartTime() {return startTime;}
 	public void setStartTime(int startTime) {this.startTime = startTime;}
-	public int getEndTime() {return endTime;}
-	public void setEndTime(int endTime) {this.endTime = endTime;}
-	public int getDuringTime() {return duringTime;}
-	public void setDuringTime(int duringTime) {
-		this.duringTime = duringTime;
-		this.endTime = this.startTime + this.duringTime;
-	}
-	
 	public void setBounds(int x, int y, int w, int h) {
 		this.x = x;
 		this.y = y;

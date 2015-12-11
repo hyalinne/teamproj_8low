@@ -3,6 +3,7 @@ package frame;
 import javax.swing.JFrame;
 
 import constants.TPConstants;
+import panels.TPMainPanel;
 
 public class TPFrame extends JFrame {
 	private static final long serialVersionUID = 1L;
@@ -16,7 +17,6 @@ public class TPFrame extends JFrame {
 		
 		this.mainPanel = new TPMainPanel();
 		this.mainPanel.init();
-		this.add(mainPanel);
 		this.getContentPane().add(mainPanel);
 	}
 	
