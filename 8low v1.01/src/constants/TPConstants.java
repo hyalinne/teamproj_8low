@@ -2,8 +2,8 @@ package constants;
 
 public class TPConstants {
 
-	public static final int WIDTH = 800;
-	public static final int HEIGHT = 780;
+	public static final int WIDTH = 820;
+	public static final int HEIGHT = 720;
 
 	// mainPanel
 	// button size
@@ -12,23 +12,19 @@ public class TPConstants {
 	
 	// panels
 	public static final int PANEL_WIDTH = 800;
-	public static final int PANEL_HEIGHT = 680;
+	public static final int PANEL_HEIGHT = 700;
 	
 	// coursePanel
-	public static final int C_BUTTON_Y = 60;
-	public static final int C_BUTTON_HEIGHT = 30;
+	public static final int C_BUTTON_Y = 10;
+	public static final int C_BUTTON_HEIGHT = 65;
 
-	public static final int C_BUTTON_SPACE = 30;
+	public static final int C_BUTTON_SPACE = 10;
 	public static final int C_BUTTON_WIDE_SPACE = 100;
 	
-	public static final int COURSE_BUTTON_WIDTH = 50;
-	public static final int COURSE_BUTTON_X = 670;
+	public static final int COURSE_BUTTON_WIDTH = 65;
+	public static final int COURSE_BUTTON_X = 700;
 	
-	public static final int DO_BUTTON_WIDTH = 70;
-	public static final int DO_BUTTON_X = 660;
-	
-	// course button
-	public static final int COURSE_WIDTH = 0;
-	public static final int COURSE_HEIGHT = 0;
+	public static final int DO_BUTTON_WIDTH = 65;
+	public static final int DO_BUTTON_X = 700;
 	
 }

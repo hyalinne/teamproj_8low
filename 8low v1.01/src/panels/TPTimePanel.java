@@ -73,7 +73,8 @@ public class TPTimePanel extends JPanel {
    
    public void init(TPCoursePanel coursePanel) {
 	   this.coursePanel = coursePanel;
-	   this.setData(coursePanel.getCourse());   
+	   ArrayList<TPData> list = coursePanel.getCourse();
+	   this.setData(list);   
    }
    
    public void setData(ArrayList<TPData> list) {

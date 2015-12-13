@@ -2,7 +2,9 @@ package panels;
 
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Font;
 import java.awt.Rectangle;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
@@ -69,7 +71,9 @@ public class TPCoursePanel extends JPanel {
 		this.addDialog = new JDialog();
 		this.addDialog.setLayout(null);
 		this.addDialog.setTitle("¿©ÇàÁöÃß°¡");
-		this.addDialog.setBounds(500, 20, 230, 300);
+		this.addDialog.setIconImage(Toolkit.getDefaultToolkit().getImage("rsc/icon.gif"));
+		this.addDialog.setBounds(500, 20, 380, 330);
+		this.addDialog.setBackground(new Color(57,172,218));
 		
 		this.undoStack = new TPUndoStack();
 		this.redoStack = new TPRedoStack();
@@ -102,7 +106,8 @@ public class TPCoursePanel extends JPanel {
 		});
 		this.add(addBtn);
 		
-		this.removeBtn = new JButton("-");
+		this.removeBtn = new JButton();
+		this.removeBtn.setIcon(new ImageIcon("rsc/-.png"));
 		this.removeBtn.setBounds(TPConstants.COURSE_BUTTON_X, TPConstants.C_BUTTON_Y + (TPConstants.C_BUTTON_HEIGHT + TPConstants.C_BUTTON_SPACE) * 1
 				, TPConstants.COURSE_BUTTON_WIDTH, TPConstants.C_BUTTON_HEIGHT);
 		this.removeBtn.addMouseListener(mouseListener);
@@ -115,25 +120,29 @@ public class TPCoursePanel extends JPanel {
 		this.changeBtn.addMouseListener(mouseListener);
 		this.add(changeBtn);
 		
-		this.undoBtn = new JButton("Undo");
+		this.undoBtn = new JButton();
+		this.undoBtn.setIcon(new ImageIcon("rsc/Undo.png"));
 		this.undoBtn.setBounds(TPConstants.DO_BUTTON_X, TPConstants.C_BUTTON_Y + (TPConstants.C_BUTTON_HEIGHT + TPConstants.C_BUTTON_SPACE) * 2 + TPConstants.C_BUTTON_WIDE_SPACE * 1
 				, TPConstants.DO_BUTTON_WIDTH, TPConstants.C_BUTTON_HEIGHT);
 		this.undoBtn.addMouseListener(mouseListener);
 		this.add(undoBtn);
 		
-		this.redoBtn = new JButton("Redo");
+		this.redoBtn = new JButton();
+		this.redoBtn.setIcon(new ImageIcon("rsc/Redo.png"));
 		this.redoBtn.setBounds(TPConstants.DO_BUTTON_X, TPConstants.C_BUTTON_Y + (TPConstants.C_BUTTON_HEIGHT + TPConstants.C_BUTTON_SPACE) * 3 + TPConstants.C_BUTTON_WIDE_SPACE * 1
 				, TPConstants.DO_BUTTON_WIDTH, TPConstants.C_BUTTON_HEIGHT);
 		this.redoBtn.addMouseListener(mouseListener);
 		this.add(redoBtn);
 		
-		this.saveBtn = new JButton("Save");
+		this.saveBtn = new JButton();
+		this.saveBtn.setIcon(new ImageIcon("rsc/Save.png"));
 		this.saveBtn.setBounds(TPConstants.DO_BUTTON_X, TPConstants.C_BUTTON_Y + (TPConstants.C_BUTTON_HEIGHT + TPConstants.C_BUTTON_SPACE) * 3 + TPConstants.C_BUTTON_WIDE_SPACE * 2
 				, TPConstants.DO_BUTTON_WIDTH, TPConstants.C_BUTTON_HEIGHT);
 		this.saveBtn.addMouseListener(mouseListener);
 		this.add(saveBtn);
 		
-		this.loadBtn = new JButton("Load");
+		this.loadBtn = new JButton();
+		this.loadBtn.setIcon(new ImageIcon("rsc/Load.png"));
 		this.loadBtn.setBounds(TPConstants.DO_BUTTON_X, TPConstants.C_BUTTON_Y + (TPConstants.C_BUTTON_HEIGHT + TPConstants.C_BUTTON_SPACE) * 4 + TPConstants.C_BUTTON_WIDE_SPACE * 2
 				, TPConstants.DO_BUTTON_WIDTH, TPConstants.C_BUTTON_HEIGHT);
 		this.loadBtn.addMouseListener(mouseListener);
@@ -161,7 +170,6 @@ public class TPCoursePanel extends JPanel {
 				y = 240;
 				x = 10;
 			}
-			
 		}
 	}
 	
@@ -170,7 +178,9 @@ public class TPCoursePanel extends JPanel {
 		
 		String[] tempString = {"¼±ÅÃ", "¸ÀÁý", "°ü±¤", "ÈÞ½Ä"};
 		JComboBox<String> tempBox = new JComboBox<String>(tempString);
-		tempBox.setBounds(80, 30, 70, 30);
+		tempBox.setFont(new Font("ÇÑÄÄ À±°íµñ 230", Font.PLAIN, 12));
+		tempBox.setBackground(new Color(255,255,255));
+		tempBox.setBounds(155, 10, 70, 30);
 		tempBox.addActionListener(new ActionListener() {
 			
 			@Override
@@ -183,15 +193,16 @@ public class TPCoursePanel extends JPanel {
 				} else if(tempBox.getSelectedItem().equals("ÈÞ½Ä")) {
 					addList("ÈÞ½Ä");
 				} else {
-					addDialog.removeAll();
-					addDialog.repaint();
+					//empty
 				}
 			}
 		});
 		this.addDialog.add(tempBox);
 		
 		JButton submitButton = new JButton("È®ÀÎ");
-		submitButton.setBounds(80, 220, 70, 30);
+		submitButton.setFont(new Font("ÇÑÄÄ À±°íµñ 230", Font.PLAIN, 12));
+		submitButton.setBackground(new Color(255,255,255));
+		submitButton.setBounds(155, 250, 70, 30);
 		submitButton.addActionListener(new ActionListener() {
 			
 			@Override
@@ -218,12 +229,12 @@ public class TPCoursePanel extends JPanel {
 	}
 	
 	private enum EDialogBounds {
-		first(30, 70, 70, 30),
-		secon(30, 120, 70, 30),
-		third(30, 170, 70, 30),
-		forth(110, 70, 70, 30),
-		fifth(110, 120, 70, 30),
-		sixth(110, 170, 70, 30);
+		first(45, 70, 120, 30),
+		secon(45, 130, 120, 30),
+		third(45, 190, 120, 30),
+		forth(205, 70, 120, 30),
+		fifth(205, 130, 120, 30),
+		sixth(205, 190, 120, 30);
 		
 		private int x, y, width, height;
 		private EDialogBounds(int x, int y, int w, int h) {
@@ -240,6 +251,7 @@ public class TPCoursePanel extends JPanel {
 		if(theme == "¸ÀÁý") {
 			for(int i = 0; i < 6; i++) {
 				TPButton temp = new TPButton();
+				temp.setFont(new Font("ÇÑÄÄ À±°íµñ 230", Font.PLAIN, 12));
 				temp.setBounds(EDialogBounds.values()[i].getBounds());
 				temp.setData(EEatingData.values()[i].getData());
 				temp.setText(EEatingData.values()[i].getData().getName());
@@ -256,6 +268,7 @@ public class TPCoursePanel extends JPanel {
 		} else if(theme == "°ü±¤") {
 			for(int i = 0; i < 6; i++) {
 				TPButton temp = new TPButton();
+				temp.setFont(new Font("ÇÑÄÄ À±°íµñ 230", Font.PLAIN, 12));
 				temp.setBounds(EDialogBounds.values()[i].getBounds());
 				temp.setData(ESeeingData.values()[i].getData());
 				temp.setText(ESeeingData.values()[i].getData().getName());
@@ -272,6 +285,7 @@ public class TPCoursePanel extends JPanel {
 		} else if(theme == "ÈÞ½Ä") {
 			for(int i = 0; i < 6; i++) {
 				TPButton temp = new TPButton();
+				temp.setFont(new Font("ÇÑÄÄ À±°íµñ 230", Font.PLAIN, 12));
 				temp.setBounds(EDialogBounds.values()[i].getBounds());
 				temp.setData(ESleepingData.values()[i].getData());
 				temp.setText(ESleepingData.values()[i].getData().getName());
@@ -416,6 +430,7 @@ public class TPCoursePanel extends JPanel {
 	    }
 		this.drawCourses();
 		this.repaint();
+		this.updataTimePanel();
 	}
 	
 	private class MouseHandler implements MouseListener {

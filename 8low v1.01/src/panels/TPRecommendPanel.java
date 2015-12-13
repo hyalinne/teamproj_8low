@@ -36,33 +36,41 @@ public class TPRecommendPanel extends JPanel {
 		
 		this.preNameLabel = new JLabel("ÀÌ¸§ : ");
 		this.preNameLabel.setBounds(50, 300, 80, 40);
+		this.preNameLabel.setFont(new Font("ÇÑÄÄ À±°íµñ 250", Font.PLAIN, 15));
 		this.add(preNameLabel);
 		this.preAddressLabel = new JLabel("ÁÖ¼Ò : ");
 		this.preAddressLabel.setBounds(50, 340, 80, 40);
+		this.preAddressLabel.setFont(new Font("ÇÑÄÄ À±°íµñ 250", Font.PLAIN, 15));
 		this.add(preAddressLabel);
 		this.prePhoneNumLabel = new JLabel("ÀüÈ­¹øÈ£ : ");
 		this.prePhoneNumLabel.setBounds(50, 380, 80, 40);
+		this.prePhoneNumLabel.setFont(new Font("ÇÑÄÄ À±°íµñ 250", Font.PLAIN, 15));
 		this.add(prePhoneNumLabel);
 		this.preContentLabel = new JLabel("»ó¼¼ : ");
 		this.preContentLabel.setBounds(50, 420, 80, 40);
+		this.preContentLabel.setFont(new Font("ÇÑÄÄ À±°íµñ 250", Font.PLAIN, 15));
 		this.add(preContentLabel);
 		
 		this.nameLabel = new JLabel();
-		this.nameLabel.setBounds(90, 300, 300, 40);
+		this.nameLabel.setBounds(90, 300, 600, 40);
+		this.nameLabel.setFont(new Font("ÇÑÄÄ À±°íµñ 230", Font.PLAIN, 15));
 		this.add(nameLabel);
 		this.addressLabel = new JLabel();
-		this.addressLabel.setBounds(90, 340, 300, 40);
+		this.addressLabel.setBounds(90, 340, 600, 40);
+		this.addressLabel.setFont(new Font("ÇÑÄÄ À±°íµñ 230", Font.PLAIN, 15));
 		this.add(addressLabel);
 		this.phoneNumLabel = new JLabel();
-		this.phoneNumLabel.setBounds(115, 380, 300, 40);
+		this.phoneNumLabel.setBounds(115, 380, 600, 40);
+		this.phoneNumLabel.setFont(new Font("ÇÑÄÄ À±°íµñ 230", Font.PLAIN, 15));
 		this.add(phoneNumLabel);
 		this.contentLabel = new JLabel();
-		this.contentLabel.setBounds(90, 420, 300, 40);
+		this.contentLabel.setBounds(90, 420, 600, 40);
+		this.contentLabel.setFont(new Font("ÇÑÄÄ À±°íµñ 230", Font.PLAIN, 15));
 		this.add(contentLabel);
 		
 		
 		Choice choice = new Choice();
-		choice.setFont(new Font("ÈÞ¸Õ°íµñ", Font.BOLD, 14));
+		choice.setFont(new Font("ÇÑÄÄ À±°íµñ 230", Font.PLAIN, 13));
 		choice.setBounds(25, 126, 176, 312);
 		choice.add("************°ü±¤************");
 		for(ESeeingData data : ESeeingData.values()) {
@@ -75,7 +83,6 @@ public class TPRecommendPanel extends JPanel {
 				// TODO Auto-generated method stub
 				for(ESeeingData data : ESeeingData.values()) {
 					if(data.getData().getName().equals(e.getItem().toString())) {
-						System.out.println("cec");
 						nameLabel.setText(data.getData().getName());
 						addressLabel.setText(data.getData().getAddress());
 						phoneNumLabel.setText(data.getData().getPhoneNum());
@@ -88,7 +95,7 @@ public class TPRecommendPanel extends JPanel {
 		add(choice);
 		
 		Choice choice1 = new Choice();
-		choice1.setFont(new Font("ÈÞ¸Õ°íµñ", Font.BOLD, 14));
+		choice1.setFont(new Font("ÇÑÄÄ À±°íµñ 230", Font.PLAIN, 13));
 		choice1.setBounds(270, 126, 176, 312);
 		choice1.add("************À½½Ä************");
 		for(EEatingData data : EEatingData.values()) {
@@ -101,7 +108,6 @@ public class TPRecommendPanel extends JPanel {
 				// TODO Auto-generated method stub
 				for(EEatingData data : EEatingData.values()) {
 					if(data.getData().getName().equals(e.getItem().toString())) {
-						System.out.println("cec");
 						nameLabel.setText(data.getData().getName());
 						addressLabel.setText(data.getData().getAddress());
 						phoneNumLabel.setText(data.getData().getPhoneNum());
@@ -114,7 +120,7 @@ public class TPRecommendPanel extends JPanel {
 		add(choice1);
 		
 		Choice choice2 = new Choice();
-		choice2.setFont(new Font("ÈÞ¸Õ°íµñ", Font.BOLD, 14));
+		choice2.setFont(new Font("ÇÑÄÄ À±°íµñ 230", Font.PLAIN, 13));
 		choice2.setBounds(525, 126, 176, 312);
 		choice2.add("************ÈÞ½Ä************");
 		for(ESleepingData data : ESleepingData.values()) {
@@ -127,7 +133,6 @@ public class TPRecommendPanel extends JPanel {
 				// TODO Auto-generated method stub
 				for(ESleepingData data : ESleepingData.values()) {
 					if(data.getData().getName().equals(e.getItem().toString())) {
-						System.out.println("cec");
 						nameLabel.setText(data.getData().getName());
 						addressLabel.setText(data.getData().getAddress());
 						phoneNumLabel.setText(data.getData().getPhoneNum());
