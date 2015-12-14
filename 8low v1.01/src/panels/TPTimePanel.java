@@ -90,8 +90,11 @@ public class TPTimePanel extends JPanel {
 			   temp[i][0] = Integer.toString(time);
 			   temp[i][1] = list.get(i).getName();
 			   list.get(i).setStartTime(time);
-			   if(time == 20) time = 8;
-			   time += 2;
+			   if(time == 20) {
+				   time = 8;
+			   } else {
+				   time += 2;
+			   }
 		   }
 	   }
 

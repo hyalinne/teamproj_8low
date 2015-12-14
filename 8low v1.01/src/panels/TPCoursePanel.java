@@ -168,6 +168,9 @@ public class TPCoursePanel extends JPanel {
 			x += 120;
 			if(x == 620) {
 				y = 240;
+				x = 30;
+			} else if(x == 630) {
+				y = 380;
 				x = 10;
 			}
 		}
@@ -308,7 +311,7 @@ public class TPCoursePanel extends JPanel {
 	private void addArea(TPData newData) {
 		this.undoStack.push(courseList);
 		if(newData != null) {
-			if(courseList.size() < 10) {
+			if(courseList.size() < 15) {
 				this.courseList.add(newData);
 			}
 		}
