@@ -52,19 +52,19 @@ public class TPRecommendPanel extends JPanel {
 		this.add(preContentLabel);
 		
 		this.nameLabel = new JLabel();
-		this.nameLabel.setBounds(90, 300, 600, 40);
+		this.nameLabel.setBounds(95, 300, 600, 40);
 		this.nameLabel.setFont(new Font("ÇÑÄÄ À±°íµñ 230", Font.PLAIN, 15));
 		this.add(nameLabel);
 		this.addressLabel = new JLabel();
-		this.addressLabel.setBounds(90, 340, 600, 40);
+		this.addressLabel.setBounds(95, 340, 600, 40);
 		this.addressLabel.setFont(new Font("ÇÑÄÄ À±°íµñ 230", Font.PLAIN, 15));
 		this.add(addressLabel);
 		this.phoneNumLabel = new JLabel();
-		this.phoneNumLabel.setBounds(115, 380, 600, 40);
+		this.phoneNumLabel.setBounds(125, 380, 600, 40);
 		this.phoneNumLabel.setFont(new Font("ÇÑÄÄ À±°íµñ 230", Font.PLAIN, 15));
 		this.add(phoneNumLabel);
 		this.contentLabel = new JLabel();
-		this.contentLabel.setBounds(90, 420, 600, 40);
+		this.contentLabel.setBounds(95, 420, 600, 40);
 		this.contentLabel.setFont(new Font("ÇÑÄÄ À±°íµñ 230", Font.PLAIN, 15));
 		this.add(contentLabel);
 		
